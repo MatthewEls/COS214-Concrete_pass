@@ -1,0 +1,17 @@
+Sequence diagram generator: https://sequencediagram.org/
+
+
+title Get Menu and place order sequence diagram
+
+Customer->RestaurantMenu:showmenu()
+Customer<--RestaurantMenu:return the menu options
+Customer->Waiter: placeOrder()
+Waiter-->Customer: confirm that order places
+Waiter-->Order: createOrder()
+Order->RestaurantMenu: getItems()
+RestaurantMenu-->Order: return the item of the order
+Order->Order: addItem()
+Order->RestaurantMenu: getTotal()
+RestaurantMenu-->Order: return the total of the order
+Order->Waiter: Order completion
+Waiter->Customer: displaybil()
