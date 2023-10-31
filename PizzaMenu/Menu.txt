@@ -1,0 +1,4 @@
+This is the pizza menu that has been set up.
+
+We have 3 basic pizzas.
+Toppings for each pizza can be added and removed.
