@@ -1,12 +1,12 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall
-SOURCES = main.cpp Employee.cpp MaitreD.cpp Waiter.cpp HeadChef.cpp Chef.cpp DrinksChef.cpp SousChef.cpp GrillChef.cpp
+SOURCES = $(wildcard *.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE = milkshake_app
+EXECUTABLE = employee_app
 
 .PHONY: all run clean
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $@
