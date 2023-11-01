@@ -1,0 +1,6 @@
+The pdf for the report of 20 marks of the project.
+This report should contain all the information about
+  research done
+  system description
+  design patterns used as well as visual reference thereof
+  
