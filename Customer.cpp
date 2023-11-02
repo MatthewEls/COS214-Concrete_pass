@@ -1,7 +1,8 @@
 #include "Customer.h"
 #include "MaitreD.h"
 #include "Table.h"
-#include "Reservation.h"  // Include Reservation's full definition
+#include "Reservation.h" 
+#include "OrderCommand.h" // Include Reservation's full definition
 #include <iostream>
 using namespace std;
 
@@ -70,4 +71,37 @@ void Customer::Leave() {
     std::cout << "You have no occupied tables." << std::endl;
 }
 
+
+void Customer::placeOrder(Command* command) {
+    orders.push_back(command);
+    command->execute();
+}
+
+void Customer::displayOrder() {
+    if (orders.empty()) {
+        std::cout << "No orders placed yet." << std::endl;
+    } else {
+        std::cout << "Current Order:" << std::endl;
+        double total = 0.0;
+        for (const Command* order : orders) {
+            const OrderCommand* orderCommand = dynamic_cast<const OrderCommand*>(order);
+            if (orderCommand) {
+                std::cout << "Pizza: " << orderCommand->getPizza()->getItemType() << " - Price: R" << orderCommand->getPizza()->getPrice() << std::endl;
+                total += orderCommand->getPizza()->getPrice();
+            }
+        }
+        std::cout << "Total Price: R" << total << std::endl;
+    }
+}
+
+double Customer::getOrderTotal() {
+    double total = 0.0;
+    for (const Command* order : orders) {
+        const OrderCommand* orderCommand = dynamic_cast<const OrderCommand*>(order);
+        if (orderCommand) {
+            total += orderCommand->getPizza()->getPrice();
+        }
+    }
+    return total;
+}
 

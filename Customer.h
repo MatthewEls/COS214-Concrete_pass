@@ -4,6 +4,7 @@
 #include <vector>
 #include "Reservation.h"  // Include Reservation's full definition
 #include "WalkIn.h"
+#include "Command.h"
 
 class MaitreD;  // Forward declaration
 
@@ -19,9 +20,15 @@ public:
     void viewReservations() const;
     void Leave();
 
+//COMMAND STUFF
+    void placeOrder(Command* command);
+    void displayOrder();
+    double getOrderTotal();
+
 private:
     MaitreD* maitreD;  // Use a pointer to MaitreD
     std::string name;
     int partySize;
     std::vector<Reservation> reservations;
+     std::vector<Command*> orders;
 };
