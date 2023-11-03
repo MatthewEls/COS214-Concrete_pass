@@ -8,12 +8,16 @@
 
 using namespace std;
 
-
+/**
+ * @class MealBuilder
+ * @brief Concrete Builder for Builder. Constructs and orders the construction of the Meal.
+ */
 class MealBuilder :public Builder {
     public:
 
         MealBuilder();
         void reset();
+        void setType(string);
         string BuildBase();
         string BuildBase(string);
         string BuildSauce();
