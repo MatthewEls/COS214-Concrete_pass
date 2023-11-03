@@ -11,8 +11,8 @@
 int main(){
     Toppings toppings;
     Godfather godfatherPizza(toppings);
-    MealBuilder b=new MealBuilder();
+    MealBuilder * b=new MealBuilder();
     Director d(b);
     d.make(&godfatherPizza);
-    Meal m=b.getResults();
+    Meal* m=b->getResults();
 }
