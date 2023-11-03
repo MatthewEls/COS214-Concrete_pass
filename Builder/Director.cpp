@@ -7,12 +7,13 @@ Director::Director(Builder* build){
 }
 
 Director::~Director(){
-    
+
 }
 
 void Director::make(Pizza* piz){
     string ret="";
     builder->reset();
+    builder->setType(piz->getItemType());
     builder->BuildBase();
     builder->BuildSauce();
     builder->BuildCheese();
