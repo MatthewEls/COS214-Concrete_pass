@@ -8,6 +8,10 @@ Meal::Meal(){
         Toppings toppings;
 }       
 
+void Meal::setType(string s){
+        type=s;
+}
+
 void Meal::setBase(string s){
         base=s;
 }
@@ -22,4 +26,15 @@ void Meal::setCheese(bool b){
 
 void Meal::addToppings(string s){
         toppings.push_back(s);
+}
+
+void Meal::outputContents(){
+        cout<< "Type: "<<type<<"\n";
+        cout<< "Base: "<< base<<"\n";
+        cout<< "Sauce: "<< sauce<<"\n";
+        cout<< "Has Cheese: : "<< ((cheese)? "Yes":"No") <<"\n";
+        cout<< "Toppings: \n";
+        for (string& topping : toppings) {
+                cout << "       " << topping<<"\n";
+        }
 }
