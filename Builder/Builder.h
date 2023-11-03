@@ -12,15 +12,15 @@ using namespace std;
 class Builder {
 public:
 
-    virtual ~Builder();
+    virtual ~Builder(){};
     virtual void reset()=0;
-    virtual string BuildBase(string s = "") = 0;
-    virtual string BuildSauce(string s= "") = 0;
+    virtual string BuildBase() = 0;
+    virtual string BuildBase(string) = 0;
+    virtual string BuildSauce() = 0;
+    virtual string BuildSauce(string) = 0;
     virtual string BuildCheese()=0;
     virtual string BuildToppings(vector<string>)=0;
 
-private:
-    Meal* meal;
     
 };
 
