@@ -15,4 +15,6 @@ int main(){
     Director d(b);
     d.make(&godfatherPizza);
     Meal* m=b->getResults();
+    m->outputContents();
+    delete m;
 }
