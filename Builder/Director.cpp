@@ -6,6 +6,10 @@ Director::Director(Builder* build){
     this->builder=build;
 }
 
+Director::~Director(){
+    
+}
+
 void Director::make(Pizza* piz){
     string ret="";
     builder->reset();
