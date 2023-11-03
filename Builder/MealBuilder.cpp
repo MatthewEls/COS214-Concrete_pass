@@ -11,18 +11,22 @@ using namespace std;
         result=new Meal();
     }
 
-    MealBuilder::~MealBuilder(){
+    string MealBuilder::BuildBase(){
+        return BuildBase("Normal");
+    }
 
-    };
-
-    string MealBuilder::BuildBase(string s = "Normal"){
+    string MealBuilder::BuildBase(string s){
         string pizzaBaseCheff= "placeolder";
         string returnSTR= "Chef "+ pizzaBaseCheff +"makes the pizza base.";
         result->setBase(s);
         return returnSTR;
     }
     
-    string MealBuilder::BuildSauce(string s = "Tomato"){
+    string MealBuilder::BuildSauce(){
+        return BuildSauce("Tomato");
+    }
+
+    string MealBuilder::BuildSauce(string s){
         string pizzaBaseCheff= "placeolder";
         string returnSTR= "Chef "+ pizzaBaseCheff +"adds the "+s+"sauce to the base";
         result->setSauce(s);
