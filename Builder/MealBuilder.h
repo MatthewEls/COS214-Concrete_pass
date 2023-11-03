@@ -1,5 +1,5 @@
-#ifndef BUILDER_H
-#define BUILDER_H
+#ifndef MEALBUILDER_H
+#define MEALBUILDER_H
 
 #include "Builder.h"
 #include "Meal.h"
@@ -13,10 +13,11 @@ class MealBuilder :public Builder {
     public:
 
         MealBuilder();
-        ~MealBuilder();
         void reset();
-        string BuildBase(string s = "Normal");
-        string BuildSauce(string s = "Tomato");
+        string BuildBase();
+        string BuildBase(string);
+        string BuildSauce();
+        string BuildSauce(string);
         string BuildCheese();
         string BuildToppings(vector<string>);
         Meal* getResults();
