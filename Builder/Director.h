@@ -6,8 +6,10 @@
 #include "Pizza.h"
 #include <string>
 /**
+ * @class Director
  * @brief Constructs an object using the Builder interface.
  */
+
 class Director {
     public:
         /**
