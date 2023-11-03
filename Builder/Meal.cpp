@@ -5,7 +5,7 @@ Meal::Meal(){
         base="";
         sauce="";
         cheese=false;
-        toppings;
+        Toppings toppings;
 }       
 
 void Meal::setBase(string s){
