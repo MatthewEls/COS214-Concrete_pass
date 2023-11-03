@@ -11,6 +11,10 @@ using namespace std;
         result=new Meal();
     }
 
+    void MealBuilder::setType(string s){
+        result->setType(s);
+    }
+
     string MealBuilder::BuildBase(){
         return BuildBase("Normal");
     }
