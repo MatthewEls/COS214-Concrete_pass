@@ -1,34 +1,17 @@
-# Compiler and flags
-CXX = g++
-CXXFLAGS = $(shell wx-config --cxxflags)
-LDLIBS = $(shell wx-config --libs)
+test: *.o
+	g++ -o test *.o
 
-# Source files and object files
-SRCS = $(wildcard *.cpp)
-OBJS = $(SRCS:.cpp=.o)
+*.o: *.cpp
+	g++ -c -g *.cpp
 
-# Executable name
-EXECUTABLE = test
-
-# Targets
-all: $(EXECUTABLE)
-
-$(EXECUTABLE): $(OBJS)
-	$(CXX) -o $@ $^ $(LDLIBS)
-
-%.o: %.cpp
-	$(CXX) -c -g $(CXXFLAGS) -o $@ $<
-
-run: $(EXECUTABLE)
-	./$(EXECUTABLE)
+run:
+	./test
 
 clean:
-	rm -f $(OBJS) $(EXECUTABLE)
+	rm *.o test
 
-debug: $(EXECUTABLE)
-	gdb $(EXECUTABLE)
+debug:
+	gdb test
 
 tar:
 	tar -cvf archive.tar makefile *.cpp *.h
-
-.PHONY: all run clean debug tar
