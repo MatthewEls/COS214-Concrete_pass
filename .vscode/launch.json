@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "cwd": "/mnt/c/Users/matthew/Nextcloud/University/Third Year 2023/COS 214 - Software Modelling/Practical Assignments/Practical - Git Repository/COS214-Concrete_pass",
+      "program": "/mnt/c/Users/matthew/Nextcloud/University/Third Year 2023/COS 214 - Software Modelling/Practical Assignments/Practical - Git Repository/COS214-Concrete_pass/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

@@ -14,11 +14,250 @@
 #include "Table.h"
 #include "TableComposite.h"
 #include "Waiter.h"
+#include <wx/wx.h>
+#include <iostream>
 
 using namespace std;
 
+class MyFrame : public wxFrame {
+public:
+    MyFrame(const wxString& title)
+        : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(1920, 1080)) {
+
+        // Load and display the initial background image
+        LoadAndSetBackgroundImage("Images/MainMenuBackground.jpg");
+
+        // Create a button
+        wxButton* changeBackgroundButton = new wxButton(this, wxID_ANY, "Change Background");
+
+        // Bind the button event to a custom handler
+        changeBackgroundButton->Bind(wxEVT_BUTTON, &MyFrame::OnChangeBackgroundClick, this);
+
+        // Create a sizer to arrange the background image and the button
+        wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
+        mainSizer->Add(background_, 1, wxEXPAND);
+        mainSizer->Add(changeBackgroundButton, 0, wxALIGN_CENTER);
+
+        SetSizerAndFit(mainSizer);
+    }
+
+    void LoadAndSetBackgroundImage(const wxString& imagePath) {
+        wxBitmap backgroundBitmap(imagePath, wxBITMAP_TYPE_ANY);
+        background_ = new wxStaticBitmap(this, -1, backgroundBitmap);
+        cout<<"background updated"<<endl;
+    }
+
+    void OnChangeBackgroundClick(wxCommandEvent& event) {
+        // Load and set the new background image when the button is clicked
+        cout<<"Button pressed!"<<endl;
+        
+        LoadAndSetBackgroundImage("Images/Background2.jpg");
+        Refresh();
+    }
+
+private:
+    wxStaticBitmap* background_;
+};
+
+class MyApp : public wxApp {
+public:
+    virtual bool OnInit() {
+        MyFrame* frame = new MyFrame("Flavor Fusion - Concrete Pass");
+        frame->Show(true);
+        initializegame();
+        return true;
+    }
+
+    int initializegame(){
+         // Create a Toppings object to manage toppings.
+    Toppings toppings;
+    Kitchen kitchen;
+    std::vector<Customer> customers;
+
+    Table table1("Table1");
+    Table table2("Table 2");
+    Table table3("Table 3");
+    Table table4("Table 4");
+    Table table5("Table 5");
+
+    Waiter waiter1("Waiter 1", 1000.0);
+    Waiter waiter2("Waiter 2", 950.0);
+    Waiter waiter3("Waiter 3", 900.0);
+    Waiter waiter4("Waiter 4", 850.0);
+    Waiter waiter5("Waiter 5", 800.0);
+
+    table1.setWaiter(&waiter1);
+
+    waiter1.assignTable(&table1);
+    waiter2.assignTable(&table2);
+    waiter3.assignTable(&table3);
+    waiter4.assignTable(&table4);
+    waiter5.assignTable(&table5);
+
+    std::vector<Waiter> allWaiters = {waiter1, waiter2, waiter3, waiter4, waiter5};
+    // Create MaitreD with tables
+    std::vector<Table> allTables = {table1, table2, table3, table4, table5};
+    MaitreD maitreD(allTables);
+
+    // Create instances of different pizza types.
+    Godfather godfatherPizza(toppings);
+    Margherita margheritaPizza(toppings);
+    Miami miamiPizza(toppings);
+
+    cout << "Instantiation/Creation of the 3 different base pizza types." << endl;
+    cout << endl;
+
+    Menu menu;
+    menu.addItem(&godfatherPizza);
+    menu.addItem(&margheritaPizza);
+    menu.addItem(&miamiPizza);
+
+    // Call the orderPizza method to handle pizza ordering
+    // orderPizza(menu, toppings, customer, kitchen);
+
+    int choice;
+    while (true)
+    {
+        displayMainMenu();
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+        {
+            // Add a customer and make a reservation
+            addCustomerAndMakeReservation(customers, maitreD);
+            break;
+        }
+        case 2:
+        {
+            // Walk-in customer
+            // Customer customer = createCustomer(maitreD);
+            // customers push_back(customer);
+            // customer.walkIn(customer.getName(), customer.getPartySize(), &maitreD);
+            break;
+        }
+        case 3:
+        {
+            // Display available tables
+            maitreD.displayAvailableTables();
+            break;
+        }
+        case 4:
+        {
+            // Display reservations
+            maitreD.displayReservations();
+            break;
+        }
+        case 5:
+        {
+            viewWaiters(allTables, allWaiters);
+            break;
+        }
+        
+        case 6:
+        {
+            // Check if there are customers
+            if (customers.empty())
+            {
+                cout << "No customers available. Please add customers first." << endl;
+                break;
+            }
+
+            // Ask the user to enter the name of the customer
+            string customerName;
+            cout << "Enter the name of the customer to display their order: ";
+            cin.ignore(); // Clear the newline character
+            getline(cin, customerName);
+            
+
+            // Find the customer by name
+            Customer *selectedCustomer = nullptr;
+            for (Customer &c : customers)
+            {
+                if (c.getName() == customerName)
+                {
+                    selectedCustomer = &c;
+                    break;
+                }
+            }
+
+            if (selectedCustomer != nullptr)
+            {
+                // Display the selected customer's order
+                selectedCustomer->displayOrder();
+                cout << "Total Price: R" << selectedCustomer->getOrderTotal() << endl;
+            }
+            else
+            {
+                cout << "Customer not found. Please enter a valid customer name." << endl;
+            }
+            removeCustomerByName(customers);
+            cout << "Thank you for using the Restaurant Reservation System. Goodbye!" << endl;
+            return 0;
+        }
+
+        case 7:
+        {
+            // Check if there are customers
+            if (customers.empty())
+            {
+                cout << "No customers available. Please add customers first." << endl;
+                break;
+            }
+
+            // Ask the user to enter the name of the customer
+            string customerName;
+            cout << "Enter the name of the customer to order pizza for: ";
+            cin.ignore(); // Clear the newline character
+            getline(cin, customerName);
+
+            // Find the customer by name
+            Customer *selectedCustomer = nullptr;
+            for (Customer &c : customers)
+            {
+                if (c.getName() == customerName)
+                {
+                    selectedCustomer = &c;
+                    break;
+                }
+            }
+
+            if (selectedCustomer != nullptr)
+            {
+
+                {
+                    // Call the orderPizza method to handle pizza ordering for the selected customer
+                    orderPizza(menu, toppings, *selectedCustomer, kitchen);
+                }
+            }
+            else
+            {
+                cout << "Customer not found. Please enter a valid customer name." << endl;
+            }
+            break;
+        }
+
+        default:
+        {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+        }
+    }
+
+   
+    } 
+
+    
+
+
+
+
+
+
 void displayMainMenu()
 {
+    cout<<"Hello World this is the main"<<endl;
     cout << "=============================================" << endl;
     cout << "         Restaurant Reservation System       " << endl;
     cout << "=============================================" << endl;
@@ -244,183 +483,10 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
     }
 }
 
-int main()
-{
-    // Create a Toppings object to manage toppings.
-    Toppings toppings;
-    Kitchen kitchen;
-    std::vector<Customer> customers;
 
-    Table table1("Table1");
-    Table table2("Table 2");
-    Table table3("Table 3");
-    Table table4("Table 4");
-    Table table5("Table 5");
 
-    Waiter waiter1("Waiter 1", 1000.0);
-    Waiter waiter2("Waiter 2", 950.0);
-    Waiter waiter3("Waiter 3", 900.0);
-    Waiter waiter4("Waiter 4", 850.0);
-    Waiter waiter5("Waiter 5", 800.0);
+    
 
-    table1.setWaiter(&waiter1);
+};
 
-    waiter1.assignTable(&table1);
-    waiter2.assignTable(&table2);
-    waiter3.assignTable(&table3);
-    waiter4.assignTable(&table4);
-    waiter5.assignTable(&table5);
-
-    std::vector<Waiter> allWaiters = {waiter1, waiter2, waiter3, waiter4, waiter5};
-    // Create MaitreD with tables
-    std::vector<Table> allTables = {table1, table2, table3, table4, table5};
-    MaitreD maitreD(allTables);
-
-    // Create instances of different pizza types.
-    Godfather godfatherPizza(toppings);
-    Margherita margheritaPizza(toppings);
-    Miami miamiPizza(toppings);
-
-    cout << "Instantiation/Creation of the 3 different base pizza types." << endl;
-    cout << endl;
-
-    Menu menu;
-    menu.addItem(&godfatherPizza);
-    menu.addItem(&margheritaPizza);
-    menu.addItem(&miamiPizza);
-
-    // Call the orderPizza method to handle pizza ordering
-    // orderPizza(menu, toppings, customer, kitchen);
-
-    int choice;
-    while (true)
-    {
-        displayMainMenu();
-        cin >> choice;
-
-        switch (choice)
-        {
-        case 1:
-        {
-            // Add a customer and make a reservation
-            addCustomerAndMakeReservation(customers, maitreD);
-            break;
-        }
-        case 2:
-        {
-            // Walk-in customer
-            // Customer customer = createCustomer(maitreD);
-            // customers push_back(customer);
-            // customer.walkIn(customer.getName(), customer.getPartySize(), &maitreD);
-            break;
-        }
-        case 3:
-        {
-            // Display available tables
-            maitreD.displayAvailableTables();
-            break;
-        }
-        case 4:
-        {
-            // Display reservations
-            maitreD.displayReservations();
-            break;
-        }
-        case 5:
-        {
-            viewWaiters(allTables, allWaiters);
-            break;
-        }
-        
-        case 6:
-        {
-            // Check if there are customers
-            if (customers.empty())
-            {
-                cout << "No customers available. Please add customers first." << endl;
-                break;
-            }
-
-            // Ask the user to enter the name of the customer
-            string customerName;
-            cout << "Enter the name of the customer to display their order: ";
-            cin.ignore(); // Clear the newline character
-            getline(cin, customerName);
-            
-
-            // Find the customer by name
-            Customer *selectedCustomer = nullptr;
-            for (Customer &c : customers)
-            {
-                if (c.getName() == customerName)
-                {
-                    selectedCustomer = &c;
-                    break;
-                }
-            }
-
-            if (selectedCustomer != nullptr)
-            {
-                // Display the selected customer's order
-                selectedCustomer->displayOrder();
-                cout << "Total Price: R" << selectedCustomer->getOrderTotal() << endl;
-            }
-            else
-            {
-                cout << "Customer not found. Please enter a valid customer name." << endl;
-            }
-            removeCustomerByName(customers);
-            cout << "Thank you for using the Restaurant Reservation System. Goodbye!" << endl;
-            return 0;
-        }
-
-        case 7:
-        {
-            // Check if there are customers
-            if (customers.empty())
-            {
-                cout << "No customers available. Please add customers first." << endl;
-                break;
-            }
-
-            // Ask the user to enter the name of the customer
-            string customerName;
-            cout << "Enter the name of the customer to order pizza for: ";
-            cin.ignore(); // Clear the newline character
-            getline(cin, customerName);
-
-            // Find the customer by name
-            Customer *selectedCustomer = nullptr;
-            for (Customer &c : customers)
-            {
-                if (c.getName() == customerName)
-                {
-                    selectedCustomer = &c;
-                    break;
-                }
-            }
-
-            if (selectedCustomer != nullptr)
-            {
-
-                {
-                    // Call the orderPizza method to handle pizza ordering for the selected customer
-                    orderPizza(menu, toppings, *selectedCustomer, kitchen);
-                }
-            }
-            else
-            {
-                cout << "Customer not found. Please enter a valid customer name." << endl;
-            }
-            break;
-        }
-
-        default:
-        {
-            cout << "Invalid choice. Please try again." << endl;
-        }
-        }
-    }
-
-    return 0;
-}
+wxIMPLEMENT_APP(MyApp);
