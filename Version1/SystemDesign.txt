@@ -1,0 +1,10 @@
+For Strategy design pattern, we have different strategies we could implement; if the customer is paying for the bill as a whole, into sub bills or if it goes on the customers tab. The paymentMethod is an attribute of a customer, this means a customer must have a payment method attached to them when created(here this is done in the createCustomer function)
+-We also assume one strategy to split the bills, this being we always take in the bill amount divided by the party size(a customer cannot spilt the bill in their own way).
+**think about logic and implementation of the tabbing strategy(until what amount are we going to allow a customer to add to their tab.
+
+For when a customer wants to order we use the observer and state design pattern, where the waiter is the observer of the customers state (wether they are ready to order or not). In our implementation the waiter observes the state of a Table to determine whether the customer is ready to order (We use table object to minimise interaction between customer and waiter class)
+The table is the subject, it maintains a list of observers, in this case writers, and notifies them, when its state changes(when a customer is ready to order). It also represents the context in the state pattern, it has reference to the current state object and delegates behaviour to the state object. When a customer is ready to order the table switches to the readyState
+The Observer class acts as an interface for observers
+The Waiter class acts as an observer, it is registered with  tables and receives notifications accordingly. It inherits from the Observer class
+The CustomerState class acts as an interface for the customers ready to order state
+NotReadyState and ReadyState both are concrete state classes
