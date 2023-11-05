@@ -37,7 +37,7 @@ const std::string& Table::getName() const {
     return name;
 }
 
-int Table::getMaxCapacity() const {
+int Table::getMaxCapacity() {
     return maxCapacity;
 }
 

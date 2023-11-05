@@ -12,7 +12,7 @@ class Table {
 private:
     TableState* state; /**< The current state of the table. */
     std::string name; /**< The name of the table. */
-    const int maxCapacity = 4; /**< The maximum party size this table can accommodate. */
+    int maxCapacity = 4; /**< The maximum party size this table can accommodate. */
     Waiter* servingWaiter;
     
 public:
@@ -49,7 +49,7 @@ public:
      * @brief Get the maximum party size this table can accommodate.
      * @return The maximum party size.
      */
-    int getMaxCapacity() const;
+    int getMaxCapacity();
 
     /**
      * @brief Set the state of the table.
@@ -67,4 +67,21 @@ public:
      * @brief Destructor for the Table class.
      */
     ~Table();
+
+
+    // Custom assignment operator
+    Table& operator=(const Table& other) {
+        if (this == &other) {
+            // Self-assignment, no need to do anything
+            return *this;
+        }
+
+        // Copy non-static const members
+        this->maxCapacity = other.maxCapacity;
+        
+        // Copy other members as well
+        // Make sure to copy all members individually
+        
+        return *this;
+    }
 };

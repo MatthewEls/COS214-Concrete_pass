@@ -11,6 +11,10 @@
  */
 class MaitreD {
 public:
+    MaitreD();
+
+    void addTablesToMaitreD(const std::vector<Table>& tables);
+
     /**
      * @brief Construct a new Maitre D object with the given tables.
      * 

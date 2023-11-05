@@ -5,7 +5,16 @@
 #include <iostream>
 using namespace std;
 
+MaitreD::MaitreD(){}
+
 MaitreD::MaitreD(const std::vector<Table>& tables) : tables(tables) {}
+
+// Add tables to MaitreD
+void MaitreD::addTablesToMaitreD(const std::vector<Table>& tables) {
+    this->tables = tables;
+}
+
+
 
 Table* MaitreD::findAvailableTable(int partySize) {
     // First, let's find a single available table that can accommodate the party size
@@ -76,6 +85,7 @@ void MaitreD::displayAvailableTables() {
         }
     }
 }
+
 void MaitreD::displayReservations() const {
     cout << "Reservations:" << endl;
     for (const Reservation& reservation : reservations) {
