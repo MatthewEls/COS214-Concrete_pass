@@ -1,21 +1,34 @@
+# Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall
-SOURCES = $(wildcard *.cpp)
-OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE = milkshake_app
+CXXFLAGS = $(shell wx-config --cxxflags)
+LDLIBS = $(shell wx-config --libs)
 
-.PHONY: all run clean
+# Source files and object files
+SRCS = $(wildcard *.cpp)
+OBJS = $(SRCS:.cpp=.o)
 
+# Executable name
+EXECUTABLE = test
+
+# Targets
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $@
+$(EXECUTABLE): $(OBJS)
+	$(CXX) -g -o $@ $^ $(LDLIBS)
 
-.cpp.o:
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+%.o: %.cpp
+	$(CXX) -c -g $(CXXFLAGS) -o $@ $<
 
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
 clean:
-	rm -f $(OBJECTS) $(EXECUTABLE)
+	rm -f $(OBJS) $(EXECUTABLE)
+
+debug: $(EXECUTABLE)
+	gdb $(EXECUTABLE)
+
+tar:
+	tar -cvf archive.tar makefile *.cpp *.h
+
+.PHONY: all run clean debug tar
