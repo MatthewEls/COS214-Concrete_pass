@@ -22,6 +22,7 @@
 #include "ReadyState.h"
 #include <cstdlib>  // For system function
 #include <unistd.h> // For sleep function
+#include <iomanip>
 
 
 // Color escape sequences
@@ -148,11 +149,11 @@ void addCustomerAndMakeWalkin(std::vector<Customer> &customers, MaitreD &maitreD
 }
 
 // Function to remove a customer by name
-void removeCustomerByName(std::vector<Customer> &customers)
+void removeCustomerByName(std::vector<Customer> &customers,string customerName)
 {
-    std::string customerName;
-    std::cout << "Enter the name of the customer to remove from the table: ";
-    std::cin >> customerName;
+    //std::string customerName;
+    //std::cout << "Enter the name of the customer to remove from the table: ";
+    //std::cin >> customerName;
 
     // Find the customer by name
     // Find the customer by name
@@ -232,7 +233,8 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
              }
             //  customer.getOrderTotal();
             //customer.displayOrder(); // Display the current order
-            cout << "Total Price: R" << customer.getOrderTotal() << endl;
+            float total = customer.getOrderTotal();
+            cout << "Total "<<std::setprecision(2)<<std::fixed<<"R"<<total<<endl;
             //cout << "Thank you for ordering. Goodbye!" << endl;
             break;
         }
@@ -626,13 +628,13 @@ int main()
             if (selectedCustomer != nullptr)
             {
                 // Display the selected customer's order
-                selectedCustomer->displayOrder();
-                cout << "Total Price: R " << selectedCustomer->getOrderTotal() << endl;
+                double total = selectedCustomer->getOrderTotal();
+                cout <<std::setprecision(2)<<std::fixed<< "Total R"<<total<<endl;
                 cout << "========================================================================================" << endl;
-                if (selectedCustomer->getOrderTotal() == 0)
+                if (total == 0)
                 {
                     cout << "No order to pay for" << endl;
-                    removeCustomerByName(customers);
+                    removeCustomerByName(customers,customerName);
                     break;
                 }
                 cout << "How would you Like to Pay" << endl;
@@ -680,7 +682,7 @@ int main()
                 {
                     cout << "Customer not found. Please enter a valid customer name." << endl;
                 }
-                removeCustomerByName(customers);
+                removeCustomerByName(customers,customerName);
                 cout << "Thank you for using the Restaurant Reservation System. Goodbye!" << endl;
                 break;
             }

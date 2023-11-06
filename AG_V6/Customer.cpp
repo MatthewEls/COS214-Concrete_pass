@@ -130,9 +130,9 @@ void Customer::placeOrder(Command* command) {
     if (orders.size() > 0) {
         std::cout << "Order placed successfully." << std::endl;}
 
-    
+    cout << "Order sent to kitchen by waiter" << endl;
     command->execute();
-    cout << "Command Executed." << endl;
+   
 }
 
 

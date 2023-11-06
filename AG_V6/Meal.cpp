@@ -33,7 +33,7 @@ void Meal::outputContents(){
         cout<< "Base: "<< base<<"\n";
         cout<< "Sauce: "<< sauce<<"\n";
         cout<< "Has Cheese: : "<< ((cheese)? "Yes":"No") <<"\n";
-        cout<< "Toppings: \n";
+        cout<< "Add-ons: \n";
         for (string& topping : toppings) {
                 cout << "       " << topping<<"\n";
         }

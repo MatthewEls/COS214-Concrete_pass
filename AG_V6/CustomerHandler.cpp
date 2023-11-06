@@ -6,12 +6,10 @@ CustomerHandler::CustomerHandler(CustomerProxy* c){
     customer=c;
 }
 
-// void WaiterHandler::ChangeWaiter(Waiter*waiter){
-//     this->worker=waiter;
-// }
 
 void CustomerHandler::handle(Meal* m){
-    //customer->receveFood(m);      //function for the customer?
+//    customer->receveFood(m);      //function for the customer?
+    customer->ReceveMeal(m);
 	if(this->next!=nullptr)
 		next->handle(m);
 }
