@@ -2,7 +2,9 @@
 //#include "Table.h"
 #include <iostream>
 
-Waiter::Waiter(const std::string& type, double salary) : Employee(type), salary(salary), tips(0.0) {}
+Waiter::Waiter(const std::string& type, double salary) : Employee(type), salary(salary), tips(0.0) {
+    cout<<"Waiter "<<type<<" has been added for the shift, Salary is R"<<salary<<endl;
+}
 
 void Waiter::setTips(double tips) {
     this->tips = tips;
@@ -23,6 +25,7 @@ std::string Waiter::getType() const {
 
 void Waiter::assignTable(Table* table){
     assignedTable = table;
+    std::cout<<"Waiter "<<type<<" is assigned table "<<assignedTable->getName()<<std::endl;
 }
 
 void Waiter::serveTable(){

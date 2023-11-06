@@ -23,6 +23,18 @@
 
 using namespace std;
 
+// Color escape sequences
+const std::string RESET = "\033[0m";
+const std::string BLACK = "\033[30m";
+const std::string RED = "\033[31m";
+const std::string GREEN = "\033[32m";
+const std::string YELLOW = "\033[33m";
+const std::string BLUE = "\033[34m";
+const std::string MAGENTA = "\033[35m";
+const std::string CYAN = "\033[36m";
+const std::string WHITE = "\033[37m";
+const std::string BOLD = "\033[1m";
+
 void displayMainMenu()
 {
     cout << "=============================================" << endl;
@@ -366,6 +378,48 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
 
 int main()
 {
+    cout<<CYAN;
+cout<<"                      ______ _                         ______         _             "<<endl;
+cout<<"                     |  ____| |                       |  ____|       (_)            "<<endl;
+cout<<"                     | |__  | | __ ___   _____  _ __  | |__ _   _ ___ _  ___  _ __  "<<endl;
+cout<<"                     |  __| | |/ _` \\ \\ / / _ \\| '__| |  __| | | / __| |/ _ \\| '_ \\ "<<endl;
+cout<<"                     | |    | | (_| |\\ V / (_) | |    | |  | |_| \\__ \\ | (_) | | | |"<<endl;
+cout<<"                     |_|    |_|\\__,_| \\_/ \\___/|_|    |_|   \\__,_|___/_|\\___/|_| |_|"<<endl<<endl;
+cout<<RESET;
+                                                                
+                                                                
+cout<<"           @@  @@ @@  @@"<<CYAN<<"                  @@@@@@@@@@@@@@@@@                 "<<WHITE<<"      @@@@@             "<<endl;
+cout<<"           @@  @@ @@  @@"<<CYAN<<"                @@@@@@@@@@@@@@@@@@@@@(              "<<WHITE<<"    @@@@@@@@#           "<<endl;
+cout<<"           @@  @@ @@  @@"<<CYAN<<"            .@@@@,      *@@@@@(       @@@@@         "<<WHITE<<"    @@@@@@@@@           "<<endl;
+cout<<"           @@  @@ @@  @@"<<CYAN<<"          @@@*   %@@@             #@@@    @@@@      "<<WHITE<<"    @@@@@@@@@           "<<endl;
+cout<<"           @@  @@ @@  @@"<<CYAN<<"       (@@@   @@                       @@   #@@@    "<<WHITE<<"    @@@@@@@@@           "<<endl;
+cout<<"           @@@@@@@@@@@@@ "<<CYAN<<"     @@@  ,@*                            @@  #@@(   "<<WHITE<<"   @@@@@@@@@           "<<endl;
+cout<<"           @@@@@@@@@@@@@"<<CYAN<<"    (@@   @%                                @/  @@@   "<<WHITE<<"  @@@@@@@@@           "<<endl;
+cout<<"            @@@@   @@@@ "<<CYAN<<"   /@@  .@                                   @@  @@@  "<<WHITE<<"  @@@@@@@@@           "<<endl;
+cout<<"               @   @  "<<CYAN<<"     @@   @                                     @@  @@* "<<WHITE<<"  @@@@@@@@@           "<<endl;
+cout<<"               @   @  "<<CYAN<<"    @@@  @@                                      @  @@@ "<<WHITE<<"  @@@@@@@@@           "<<endl;
+cout<<"               @   @  "<<CYAN<<"    @@@  @                                       @  /@@ "<<WHITE<<"  @@@@,  %@           "<<endl;
+cout<<"               @   @  "<<CYAN<<"    @@@  @#                                      @  @@@  "<<WHITE<<" @@@@    @           "<<endl;
+cout<<"               @   @  "<<CYAN<<"     @@  &@                                     @@  @@@ "<<WHITE<<"  @@@@    @           "<<endl;
+cout<<"               @   @  "<<CYAN<<"     @@@  @@                                   .@  @@@    "<<WHITE<<"   @    @           "<<endl;
+cout<<"               @   @  "<<CYAN<<"      @@@  @@                                 @@  &@@    "<<WHITE<<"    @    @           "<<endl;
+cout<<"               @   @  "<<CYAN<<"       @@@   @@                              @(  @@@    "<<WHITE<<"     @    @           "<<endl;
+cout<<"               @   @  "<<CYAN<<"         @@@   @@                         @@   @@@#     "<<WHITE<<"     @    @           "<<endl;
+cout<<"               @   @  "<<CYAN<<"           @@@    @@@                 .@@,   @@@#     "<<WHITE<<"       @    @           "<<endl;
+cout<<"               @   @  "<<CYAN<<"             @@@@@     @@@@@@@@@@@@@#    .@@@@        "<<WHITE<<"       @    @           "<<endl;
+cout<<"               @   @  "<<CYAN<<"                 @@@@@@,            @@@@@@              "<<WHITE<<"     @    @           "<<endl;
+cout<<"                @@@/  "<<CYAN<<"                       @@@@@@@@@@@@@*                   "<<WHITE<<"      @@@@            "<<endl;
+
+
+cout<<"  _____       _ _   _       _ _     _                               _                              _"<<endl;    
+cout<<" |_   _|     (_) | (_)     | (_)   (_)                             | |                            | |   "<<endl;   
+cout<<"   | |  _ __  _| |_ _  __ _| |_ ___ _ _ __   __ _     _ __ ___  ___| |_ __ _ _   _ _ __ __ _ _ __ | |_  "<<endl;
+cout<<"   | | | '_ \\| | __| |/ _` | | / __| | '_ \\ / _` |   | '__/ _ \\/ __| __/ _` | | | | '__/ _` | '_ \\| __| "<<endl;
+cout<<"  _| |_| | | | | |_| | (_| | | \\__ \\ | | | | (_| |   | | |  __/\\__ \\ || (_| | |_| | | | (_| | | | | |_  "<<endl;
+cout<<" |_____|_| |_|_|\\__|_|\\__,_|_|_|___/_|_| |_|\\__, |   |_|  \\___||___/\\__\\__,_|\\__,_|_|  \\__,_|_| |_|\\__| "<<endl;
+cout<<"                                             __/ |                                                    "<<endl;
+cout<<"                                            |___/                                                     "<<endl<<endl;
+
     // Create a Toppings object to manage toppings.
     Toppings toppings;
     // Kitchen kitchen;
@@ -373,30 +427,36 @@ int main()
     Kitchen kitchen(&headChef);
     std::vector<Customer> customers;
 
-    Table table1("Table1");
-    Table table2("Table 2");
-    Table table3("Table 3");
-    Table table4("Table 4");
-    Table table5("Table 5");
-    Table table6("Table 6");
-    Table table7("Table 7");
-    Table table8("Table 8");
-    Table table9("Table 9");
-    Table table10("Table 10");
+    cout<<"============================="<<endl;
+    cout<<"Creating tables"<<endl;
+    cout<<"============================="<<endl<<endl;
+    Table table1("T1");
+    Table table2("T2");
+    Table table3("T3");
+    Table table4("T4");
+    Table table5("T5");
+    Table table6("T6");
+    Table table7("T7");
+    Table table8("T8");
+    Table table9("T9");
+    Table table10("T10");
 
-    Waiter waiter1("Waiter 1", 1000.0);
-    Waiter waiter2("Waiter 2", 950.0);
-    Waiter waiter3("Waiter 3", 900.0);
-    Waiter waiter4("Waiter 4", 850.0);
-    Waiter waiter5("Waiter 5", 800.0);
-    Waiter waiter6("Waiter 6", 750.0);
-    Waiter waiter7("Waiter 7", 700.0);
-    Waiter waiter8("Waiter 8", 650.0);
-    Waiter waiter9("Waiter 9", 600.0);
-    Waiter waiter10("Waiter 10", 550.0);
+    cout<<endl<<"============================="<<endl;
+    cout<<"Waiters signing in for shift"<<endl;
+    cout<<"============================="<<endl<<endl;
+    Waiter waiter1("James Smith", 1000.0);
+    Waiter waiter2("Lucy Waters", 950.0);
+    Waiter waiter3("Tina Turner", 900.0);
+    Waiter waiter4("Siya Zulu", 850.0);
+    Waiter waiter5("Jane Turner", 800.0);
+    Waiter waiter6("Celemusa Zondi", 750.0);
+    Waiter waiter7("Ashton Wheel", 700.0);
+    Waiter waiter8("Jason Judge", 650.0);
+    Waiter waiter9("Anne Irish", 600.0);
+    Waiter waiter10("Andile Dube", 550.0);
 
     table1.setWaiter(&waiter1);
-
+    cout<<endl<<"Allocating waiters to tables for shift"<<endl;
     waiter1.assignTable(&table1);
     waiter2.assignTable(&table2);
     waiter3.assignTable(&table3);
@@ -414,23 +474,37 @@ int main()
     std::vector<Table> allTables = {table1, table2, table3, table4, table5};
     std::vector<Table> allTables2 = {table6, table7, table8, table9, table10};
     std::vector<Table> allTables3 = {table1, table2, table3, table4, table5, table6, table7, table8, table9, table10};
+    
+    cout<<endl<<"Allocating tables for reservations"<<endl;
     ReservationStrategy *reservationStrategy = new ReservationStrategy(allTables);
     MaitreD maitreD(reservationStrategy);
+
+    cout<<endl<<"Allocating tables for walk-ins"<<endl;
     WalkInStrategy *walkInStrategy = new WalkInStrategy(allTables2);
     MaitreD maitreD1(walkInStrategy);
 
-    // Create instances of different pizza types.
-    Godfather godfatherPizza(toppings);
-    Margherita margheritaPizza(toppings);
-    Miami miamiPizza(toppings);
 
-    cout << "Instantiation/Creation of the 3 different base pizza types." << endl;
-    cout << endl;
+    cout<<endl<<"============================="<<endl;
+    cout<<"Designing different pizza types"<<endl;
+    cout<<"============================="<<endl<<endl;
+    Godfather godfatherPizza(toppings);
+    godfatherPizza.displayToppings();
+    Margherita margheritaPizza(toppings);
+    margheritaPizza.displayToppings();
+    Miami miamiPizza(toppings);
+    miamiPizza.displayToppings();
+
+
+    cout<<endl<<"============================="<<endl;
+    cout<<"Creating Menu for shift"<<endl;
+    cout<<"============================="<<endl<<endl;
 
     Menu menu;
     menu.addItem(&godfatherPizza);
     menu.addItem(&margheritaPizza);
     menu.addItem(&miamiPizza);
+
+    menu.displayMenu();
 
     // Call the orderPizza method to handle pizza ordering
     // orderPizza(menu, toppings, customer, kitchen);
