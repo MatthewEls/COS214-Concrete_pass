@@ -32,7 +32,11 @@ public:
      */
     double getPrice() const override;
     double getPriceTotal() const;
-
+    /**
+     * Function to display a topping to the pizza.
+     * @param topping The name of the topping to add.
+     */
+    void displayToppings();
     /**
      * Function to add a topping to the pizza.
      * @param topping The name of the topping to add.

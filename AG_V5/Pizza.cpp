@@ -47,6 +47,19 @@ double Pizza::getPriceTotal() const {
     return totalPrice;
 }
 
+
+/**
+ * Function to display a topping to the pizza.
+ * @param topping The name of the topping to add.
+ */
+void Pizza::displayToppings() {
+    // Add the specified topping to the pizza.
+    std::cout<<"Toppings for: "<<itemType<<std::endl;
+    for (std::string& topping :pizzaToppings) {
+        std::cout << "       " << topping<<"\n";
+    }
+}
+
 /**
  * Function to add a topping to the pizza.
  * @param topping The name of the topping to add.
@@ -55,6 +68,8 @@ void Pizza::addTopping(const std::string& topping) {
     // Add the specified topping to the pizza.
     pizzaToppings.push_back(topping);
 }
+
+
 
 /**
  * Function to remove a topping from the pizza.

@@ -366,6 +366,35 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
 
 int main()
 {
+cout<<"  ______ _                         ______         _             "<<endl;
+cout<<" |  ____| |                       |  ____|       (_)            "<<endl;
+cout<<" | |__  | | __ ___   _____  _ __  | |__ _   _ ___ _  ___  _ __  "<<endl;
+cout<<" |  __| | |/ _` \\ \\ / / _ \\| '__| |  __| | | / __| |/ _ \\| '_ \\ "<<endl;
+cout<<" | |    | | (_| |\\ V / (_) | |    | |  | |_| \\__ \\ | (_) | | | |"<<endl;
+cout<<" |_|    |_|\\__,_| \\_/ \\___/|_|    |_|   \\__,_|___/_|\\___/|_| |_|"<<endl;
+                                                                
+                                                                
+cout<<"           @@  @@ @@  @@                  @@@@@@@@@@@@@@@@@                     @@@@@             "<<endl;
+cout<<"           @@  @@ @@  @@                @@@@@@@@@@@@@@@@@@@@@(                @@@@@@@@#           "<<endl;
+cout<<"           @@  @@ @@  @@           .@@@@,      *@@@@@(       @@@@@           @@@@@@@@@           "<<endl;
+cout<<"           @@  @@ @@  @@         @@@*   %@@@             #@@@    @@@@         @@@@@@@@@           "<<endl;
+cout<<"           @@  @@ @@  @@      (@@@   @@                       @@   #@@@       @@@@@@@@@           "<<endl;
+cout<<"           @@@@@@@@@@@@@     @@@  ,@*                            @@  #@@(     @@@@@@@@@           "<<endl;
+cout<<"           @@@@@@@@@@@@@   (@@   @%                                @/  @@@    @@@@@@@@@           "<<endl;
+cout<<"            @@@@   @@@@   /@@  .@                                   @@  @@@   @@@@@@@@@           "<<endl;
+cout<<"               @   @      @@   @                                     @@  @@*  @@@@@@@@@           "<<endl;
+cout<<"               @   @     @@@  @@                                      @  @@@  @@@@@@@@@           "<<endl;
+cout<<"               @   @     @@@  @                                       @  /@@  @@@@,  %@           "<<endl;
+cout<<"               @   @     @@@  @#                                      @  @@@  @@@@    @           "<<endl;
+cout<<"               @   @      @@  &@                                     @@  @@@  @@@@    @           "<<endl;
+cout<<"               @   @      @@@  @@                                   .@  @@@      @    @           "<<endl;
+cout<<"               @   @       @@@  @@                                 @@  &@@       @    @           "<<endl;
+cout<<"               @   @        @@@   @@                              @(  @@@        @    @           "<<endl;
+cout<<"               @   @          @@@   @@                         @@   @@@#         @    @           "<<endl;
+cout<<"               @   @            @@@    @@@                 .@@,   @@@#           @    @           "<<endl;
+cout<<"               @   @              @@@@@     @@@@@@@@@@@@@#    .@@@@              @    @           "<<endl;
+cout<<"               @   @                  @@@@@@,            @@@@@@                  @    @           "<<endl;
+cout<<"                @@@/                        @@@@@@@@@@@@@*                        @@@@            "<<endl;
 
 
 cout<<"  _____       _ _   _       _ _     _                             _                              _"<<endl;    
@@ -440,18 +469,28 @@ cout<<"                                            |___/                        
     WalkInStrategy *walkInStrategy = new WalkInStrategy(allTables2);
     MaitreD maitreD1(walkInStrategy);
 
-    // Create instances of different pizza types.
-    Godfather godfatherPizza(toppings);
-    Margherita margheritaPizza(toppings);
-    Miami miamiPizza(toppings);
 
-    cout << "Instantiation/Creation of the 3 different base pizza types." << endl;
-    cout << endl;
+    cout<<endl<<"============================="<<endl;
+    cout<<"Designing different pizza types"<<endl;
+    cout<<"============================="<<endl<<endl;
+    Godfather godfatherPizza(toppings);
+    godfatherPizza.displayToppings();
+    Margherita margheritaPizza(toppings);
+    margheritaPizza.displayToppings();
+    Miami miamiPizza(toppings);
+    miamiPizza.displayToppings();
+
+
+    cout<<endl<<"============================="<<endl;
+    cout<<"Creating Menu for shift"<<endl;
+    cout<<"============================="<<endl<<endl;
 
     Menu menu;
     menu.addItem(&godfatherPizza);
     menu.addItem(&margheritaPizza);
     menu.addItem(&miamiPizza);
+
+    menu.displayMenu();
 
     // Call the orderPizza method to handle pizza ordering
     // orderPizza(menu, toppings, customer, kitchen);
