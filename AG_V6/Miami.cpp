@@ -1,6 +1,6 @@
 #include "Miami.h"
 
-Miami::Miami(Toppings& toppings) : Pizza("Miami Pizza", 110.50, toppings) {
+Miami::Miami(Toppings& toppings) : Pizza("Miami Pizza         ", 110.50, toppings) {
     // Set the description and base price using the base class constructor.
 
     // Initialize the hardcoded toppings.

@@ -78,9 +78,11 @@ void WalkInStrategy::displayAvailableTables() {
     cout << "Available Tables:" << endl;
     for (Table& table : tables) {
         if (table.isAvailable()) {
-            cout << table.getName() << endl;
+            cout << table.getName() << "\t";
         }
+
     }
+    cout<<endl;
 }
 
 // string WalkInStrategy::getCurrentTime() {

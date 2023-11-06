@@ -2,6 +2,9 @@
 //#include "Table.h"
 #include <iostream>
 
+const std::string RESET = "\033[0m";
+const std::string YELLOW = "\033[33m";
+
 Waiter::Waiter(const std::string& type, double salary) : Employee(type), salary(salary), tips(0.0) {
     cout<<"Waiter "<<type<<" has been added for the shift, Salary is R"<<salary<<endl;
 }
@@ -15,7 +18,7 @@ double Waiter::getTotalEarnings() const {
 }
 
 void Waiter::work() {
-    std::cout << "Waiter " << type << " is taking care of a table." << std::endl;
+    std::cout <<YELLOW<< "\t\t\t\tWaiter " << type << " is taking care of a table." << RESET<<std::endl;
     // Additional functionality to take an order and serve an order
 }
 
@@ -29,7 +32,7 @@ void Waiter::assignTable(Table* table){
 }
 
 void Waiter::serveTable(){
-    std::cout<<"Waiter "<<type<<" is serving table "<<assignedTable->getName()<<std::endl;
+    std::cout<<YELLOW<<"\t\t\t\tWaiter "<<type<<" is serving table."<<assignedTable->getName()<<RESET<<std::endl;
 }
 
 Table* Waiter::getTable(){
@@ -37,7 +40,7 @@ Table* Waiter::getTable(){
 }
 
 void Waiter::returnMeal(Meal* m){
-    cout<<"testing the Waiter Serve Table\n";
+    cout<<YELLOW<<"\t\t\t\tWaiter is bringing food to table\n"<<RESET;
     //implimentaion for getting the meal to the table
 }
 

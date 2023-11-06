@@ -19,9 +19,10 @@ void ReservationStrategy::displayAvailableTables()
     {
         if (table.isAvailable())
         {
-            cout << table.getName() << endl;
+            cout << table.getName()<< "\t";
         }
     }
+    cout<<endl;
 }
 
   

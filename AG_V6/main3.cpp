@@ -20,8 +20,9 @@
 #include "paymentMethod.h"
 #include "Tab.h"
 #include "ReadyState.h"
+#include <cstdlib>  // For system function
+#include <unistd.h> // For sleep function
 
-using namespace std;
 
 // Color escape sequences
 const std::string RESET = "\033[0m";
@@ -37,19 +38,19 @@ const std::string BOLD = "\033[1m";
 
 void displayMainMenu()
 {
-    cout << "=============================================" << endl;
-    cout << "         Restaurant Reservation System       " << endl;
-    cout << "=============================================" << endl;
-    cout << "1. Make a Reservation" << endl;
-    cout << "2. Walk-in Customer" << endl;
-    cout << "3. Display Available Tables" << endl;
-    cout << "4. Display Reservations" << endl;
-    cout << "5. View Waiters Assigned to Tables" << endl;
-    cout << "6. Leave Table" << endl;
-    cout << "7. Order Pizza" << endl; // Added option to order pizza
-    cout << "8. Exit" << endl;
-    cout << "=============================================" << endl;
-    cout << "Please enter your choice: ";
+    std::cout << "=============================================" << std::endl;
+    std::cout << "         Restaurant Reservation System       " << std::endl;
+    std::cout << "=============================================" << std::endl;
+    std::cout << "1. Make a Reservation" << std::endl;
+    std::cout << "2. Walk-in Customer" << std::endl;
+    std::cout << "3. Display Available Tables" << std::endl;
+    std::cout << "4. Display Reservations" << std::endl;
+    std::cout << "5. View Waiters Assigned to Tables" << std::endl;
+    std::cout << "6. Leave Table" << std::endl;
+    std::cout << "7. Order Pizza" << std::endl; // Added option to order pizza
+    std::cout << "8. Exit" << std::endl;
+    std::cout << "=============================================" << std::endl;
+    std::cout << "Please enter your choice: ";
 }
 
 void viewWaiters(std::vector<Table> &allTables, std::vector<Waiter> &allWaiters)
@@ -110,7 +111,7 @@ void addCustomerAndMakeReservation(std::vector<Customer> &customers, MaitreD &ma
     std::cin >> name;
     std::cout << "Enter party size: ";
     std::cin >> partySize;
-    std::cout << "Enter reservation time (e.g., 2023-10-31 18:30): ";
+    std::cout << "Enter expected time (e.g., 18:30): ";
     std::cin.ignore(); // Clear the newline character
     std::getline(std::cin, reservationTime);
 
@@ -136,8 +137,8 @@ void addCustomerAndMakeWalkin(std::vector<Customer> &customers, MaitreD &maitreD
     std::cin >> name;
     std::cout << "Enter party size: ";
     std::cin >> partySize;
-    std::cin.ignore(); // Clear the newline character
-    std::getline(std::cin, reservationTime);
+    // std::cin.ignore(); // Clear the newline character
+    // std::getline(std::cin, reservationTime);
 
     customers.push_back(Customer(name, partySize, &maitreD));
     cout << "HERE" << endl;
@@ -212,6 +213,9 @@ vector<string> splitString(const string &input, char delimiter)
 void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kitchen, std::vector<Waiter> &waiter)
 {
 
+    vector<Command*> tableOrder;
+
+
     while (true)
     {
         cout << "Welcome to the pizza menu. Please select a pizza from the menu (enter item number):" << endl;
@@ -222,10 +226,14 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
         cin >> choice;
 
         if (choice == 0)
-        {
-            customer.displayOrder(); // Display the current order
+        { 
+             for (Command* orderCommand : tableOrder) {
+                customer.placeOrder(orderCommand);
+             }
+            //  customer.getOrderTotal();
+            //customer.displayOrder(); // Display the current order
             cout << "Total Price: R" << customer.getOrderTotal() << endl;
-            cout << "Thank you for ordering. Goodbye!" << endl;
+            //cout << "Thank you for ordering. Goodbye!" << endl;
             break;
         }
         else if (choice > 0 && choice <= menu.getItemsCount())
@@ -236,7 +244,7 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
             if (selectedPizza)
             {
                 // Ask if the customer wants additional toppings
-                cout << "Would you like to add additional toppings? (yes/no): ";
+                cout << "Would you like to add additional toppings or drinks? (yes/no): ";
                 string additionalToppingsChoice;
                 cin >> additionalToppingsChoice;
 
@@ -275,13 +283,14 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
                             if (waiter.getTable()->getName() == customer.getReservations()[i].getTable()->getSubTable()->getName())
                             {
                                 /* code */
-                                cout << "Waiter found" << endl;
+                                cout << YELLOW<<"\t\t\t\tWaiter found" << RESET<<endl;
 
                                 waiter.getTable()->addObserver(&waiter);
                                 waiter.getTable()->notifyWaiters();
                                 Command *orderCommand = new OrderCommand(kitchen, selectedPizza, &waiter, &customer);
-                                customer.placeOrder(orderCommand);
-                                cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
+                                tableOrder.push_back(orderCommand);
+                                //customer.placeOrder(orderCommand);
+                                // cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
                                 // i++;
                                 break;
                             }
@@ -289,19 +298,20 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
                         else if (waiter.getTable()->getName() == customer.getReservations()[i].getTable()->getName())
                         {
                             // Table *comp = waiter.getTable()->getSubTable();
-                            cout << "Waiter found" << endl;
+                            cout <<YELLOW<< "\t\t\t\tWaiter found" <<RESET<< endl;
 
                             waiter.getTable()->addObserver(&waiter);
                             waiter.getTable()->notifyWaiters();
                             Command *orderCommand = new OrderCommand(kitchen, selectedPizza, &waiter, &customer);
-                            customer.placeOrder(orderCommand);
-                            cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
+                            tableOrder.push_back(orderCommand);
+                            //customer.placeOrder(orderCommand);
+                            // cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
                             // i++;
                             break;
                         }
                         else
                         {
-                            cout << "Waiter not found" << endl;
+                            cout <<YELLOW<< "\t\t\t\tWaiter not found" <<RESET<< endl;
                             // cout << waiter.getTable()->getName() << endl;
                         }
                     }
@@ -317,13 +327,14 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
                             if (waiter.getTable()->getName() == customer.getWalkIns()[i].getTable()->getSubTable()->getName())
                             {
                                 /* code */
-                                cout << "Waiter found" << endl;
+                                cout <<YELLOW<< "\t\t\t\tWaiter found" <<RESET<< endl;
 
                                 waiter.getTable()->addObserver(&waiter);
                                 waiter.getTable()->notifyWaiters();
                                 Command *orderCommand = new OrderCommand(kitchen, selectedPizza, &waiter, &customer);
-                                customer.placeOrder(orderCommand);
-                                cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
+                                tableOrder.push_back(orderCommand);
+                                //customer.placeOrder(orderCommand);
+                                // cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
                                 // i++;
                                 break;
                             }
@@ -331,17 +342,18 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
                         else if (waiter.getTable()->getName() == customer.getWalkIns()[i].getTable()->getName())
                         {
 
-                            cout << "Waiter found" << endl;
+                            cout <<YELLOW<<"\t\t\t\tWaiter found" <<RESET<< endl;
                             Command *orderCommand = new OrderCommand(kitchen, selectedPizza, &waiter, &customer);
-                            customer.placeOrder(orderCommand);
-                            cout << "Your order for Here" << selectedPizza->getItemType() << " has been placed." << endl;
+                            tableOrder.push_back(orderCommand);
+                            //customer.placeOrder(orderCommand);
+                            // cout << "Your order for Here" << selectedPizza->getItemType() << " has been placed." << endl;
                             // i++;
                             break;
                         }
                         else
                         {
                             /* code */
-                            cout << "Waiter not found" << endl;
+                            cout <<YELLOW<< "\t\t\t\tWaiter not found" << RESET<<endl;
                         }
                         
                     }
@@ -349,7 +361,7 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
                 else
                 {
                     /* code */
-                    cout << "Waiter not assigned to a table" << endl;
+                    cout <<YELLOW<< "\t\t\t\tWaiter not assigned to a table" <<RESET<< endl;
                 }
 
                 // Example: Get the description, price, and toppings of a specific pizza.
@@ -376,41 +388,47 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
     }
 }
 
-int main()
+void displayLogo(){
+    cout<<endl<<"           @@  @@ @@  @@"<<CYAN<<"                  @@@@@@@@@@@@@@@@@                 "<<WHITE<<"      @@@@@             "<<endl;
+    cout<<"           @@  @@ @@  @@"<<CYAN<<"                @@@@@@@@@@@@@@@@@@@@@(              "<<WHITE<<"    @@@@@@@@#           "<<endl;
+    cout<<"           @@  @@ @@  @@"<<CYAN<<"            .@@@@,      *@@@@@(       @@@@@         "<<WHITE<<"    @@@@@@@@@           "<<endl;
+    cout<<"           @@  @@ @@  @@"<<CYAN<<"          @@@*   %@@@             #@@@    @@@@      "<<WHITE<<"    @@@@@@@@@           "<<endl;
+    cout<<"           @@  @@ @@  @@"<<CYAN<<"       (@@@   @@                       @@   #@@@    "<<WHITE<<"    @@@@@@@@@           "<<endl;
+    cout<<"           @@@@@@@@@@@@@ "<<CYAN<<"     @@@  ,@*                            @@  #@@(   "<<WHITE<<"   @@@@@@@@@           "<<endl;
+    cout<<"           @@@@@@@@@@@@@"<<CYAN<<"    (@@   @%                                @/  @@@   "<<WHITE<<"  @@@@@@@@@           "<<endl;
+    cout<<"            @@@@   @@@@ "<<CYAN<<"   /@@  .@                                   @@  @@@  "<<WHITE<<"  @@@@@@@@@           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"     @@   @                                     @@  @@* "<<WHITE<<"  @@@@@@@@@           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"    @@@  @@                                      @  @@@ "<<WHITE<<"  @@@@@@@@@           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"    @@@  @                                       @  /@@ "<<WHITE<<"  @@@@,  %@           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"    @@@  @#                                      @  @@@  "<<WHITE<<" @@@@    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"     @@  &@                                     @@  @@@ "<<WHITE<<"  @@@@    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"     @@@  @@                                   .@  @@@    "<<WHITE<<"   @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"      @@@  @@                                 @@  &@@    "<<WHITE<<"    @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"       @@@   @@                              @(  @@@    "<<WHITE<<"     @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"         @@@   @@                         @@   @@@#     "<<WHITE<<"     @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"           @@@    @@@                 .@@,   @@@#     "<<WHITE<<"       @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"             @@@@@     @@@@@@@@@@@@@#    .@@@@        "<<WHITE<<"       @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"                 @@@@@@,            @@@@@@              "<<WHITE<<"     @    @           "<<endl;
+    cout<<"                @@@/  "<<CYAN<<"                       @@@@@@@@@@@@@*                   "<<WHITE<<"      @@@@            "<<endl<<endl;
+}
+void displayName()
 {
-    cout<<CYAN;
-cout<<"                      ______ _                         ______         _             "<<endl;
-cout<<"                     |  ____| |                       |  ____|       (_)            "<<endl;
-cout<<"                     | |__  | | __ ___   _____  _ __  | |__ _   _ ___ _  ___  _ __  "<<endl;
-cout<<"                     |  __| | |/ _` \\ \\ / / _ \\| '__| |  __| | | / __| |/ _ \\| '_ \\ "<<endl;
-cout<<"                     | |    | | (_| |\\ V / (_) | |    | |  | |_| \\__ \\ | (_) | | | |"<<endl;
-cout<<"                     |_|    |_|\\__,_| \\_/ \\___/|_|    |_|   \\__,_|___/_|\\___/|_| |_|"<<endl<<endl;
-cout<<RESET;
-                                                                
-                                                                
-cout<<"           @@  @@ @@  @@"<<CYAN<<"                  @@@@@@@@@@@@@@@@@                 "<<WHITE<<"      @@@@@             "<<endl;
-cout<<"           @@  @@ @@  @@"<<CYAN<<"                @@@@@@@@@@@@@@@@@@@@@(              "<<WHITE<<"    @@@@@@@@#           "<<endl;
-cout<<"           @@  @@ @@  @@"<<CYAN<<"            .@@@@,      *@@@@@(       @@@@@         "<<WHITE<<"    @@@@@@@@@           "<<endl;
-cout<<"           @@  @@ @@  @@"<<CYAN<<"          @@@*   %@@@             #@@@    @@@@      "<<WHITE<<"    @@@@@@@@@           "<<endl;
-cout<<"           @@  @@ @@  @@"<<CYAN<<"       (@@@   @@                       @@   #@@@    "<<WHITE<<"    @@@@@@@@@           "<<endl;
-cout<<"           @@@@@@@@@@@@@ "<<CYAN<<"     @@@  ,@*                            @@  #@@(   "<<WHITE<<"   @@@@@@@@@           "<<endl;
-cout<<"           @@@@@@@@@@@@@"<<CYAN<<"    (@@   @%                                @/  @@@   "<<WHITE<<"  @@@@@@@@@           "<<endl;
-cout<<"            @@@@   @@@@ "<<CYAN<<"   /@@  .@                                   @@  @@@  "<<WHITE<<"  @@@@@@@@@           "<<endl;
-cout<<"               @   @  "<<CYAN<<"     @@   @                                     @@  @@* "<<WHITE<<"  @@@@@@@@@           "<<endl;
-cout<<"               @   @  "<<CYAN<<"    @@@  @@                                      @  @@@ "<<WHITE<<"  @@@@@@@@@           "<<endl;
-cout<<"               @   @  "<<CYAN<<"    @@@  @                                       @  /@@ "<<WHITE<<"  @@@@,  %@           "<<endl;
-cout<<"               @   @  "<<CYAN<<"    @@@  @#                                      @  @@@  "<<WHITE<<" @@@@    @           "<<endl;
-cout<<"               @   @  "<<CYAN<<"     @@  &@                                     @@  @@@ "<<WHITE<<"  @@@@    @           "<<endl;
-cout<<"               @   @  "<<CYAN<<"     @@@  @@                                   .@  @@@    "<<WHITE<<"   @    @           "<<endl;
-cout<<"               @   @  "<<CYAN<<"      @@@  @@                                 @@  &@@    "<<WHITE<<"    @    @           "<<endl;
-cout<<"               @   @  "<<CYAN<<"       @@@   @@                              @(  @@@    "<<WHITE<<"     @    @           "<<endl;
-cout<<"               @   @  "<<CYAN<<"         @@@   @@                         @@   @@@#     "<<WHITE<<"     @    @           "<<endl;
-cout<<"               @   @  "<<CYAN<<"           @@@    @@@                 .@@,   @@@#     "<<WHITE<<"       @    @           "<<endl;
-cout<<"               @   @  "<<CYAN<<"             @@@@@     @@@@@@@@@@@@@#    .@@@@        "<<WHITE<<"       @    @           "<<endl;
-cout<<"               @   @  "<<CYAN<<"                 @@@@@@,            @@@@@@              "<<WHITE<<"     @    @           "<<endl;
-cout<<"                @@@/  "<<CYAN<<"                       @@@@@@@@@@@@@*                   "<<WHITE<<"      @@@@            "<<endl;
+
+    system("clear");
+      cout<<CYAN;
+        cout<<"  ______  _                                    ______            _               "<<endl;
+        cout<<" |  ____|| |                                  |  ____|          (_)              "<<endl;
+        cout<<" | |__   | |  __ _ __   __ ___   _   _  _ __  | |__  _   _  ___  _   ___   _ __  "<<endl;
+        cout<<" |  __|  | | / _` |\\ \\ / // _ \\ | | | || '__| |  __|| | | |/ __|| | / _ \\ | '_ \\ "<<endl;
+        cout<<" | |     | || (_| | \\ V /| (_) || |_| || |    | |   | |_| |\\__ \\| || (_) || | | |"<<endl;
+        cout<<" |_|     |_| \\__,_|  \\_/  \\___/  \\__,_||_|    |_|    \\__,_||___/|_| \\___/ |_| |_|"<<endl<<endl;
+        cout<<RESET;
 
 
+}
+
+void displayInitRestaurant()
+{
 cout<<"  _____       _ _   _       _ _     _                               _                              _"<<endl;    
 cout<<" |_   _|     (_) | (_)     | (_)   (_)                             | |                            | |   "<<endl;   
 cout<<"   | |  _ __  _| |_ _  __ _| |_ ___ _ _ __   __ _     _ __ ___  ___| |_ __ _ _   _ _ __ __ _ _ __ | |_  "<<endl;
@@ -419,6 +437,19 @@ cout<<"  _| |_| | | | | |_| | (_| | | \\__ \\ | | | | (_| |   | | |  __/\\__ \\ 
 cout<<" |_____|_| |_|_|\\__|_|\\__,_|_|_|___/_|_| |_|\\__, |   |_|  \\___||___/\\__\\__,_|\\__,_|_|  \\__,_|_| |_|\\__| "<<endl;
 cout<<"                                             __/ |                                                    "<<endl;
 cout<<"                                            |___/                                                     "<<endl<<endl;
+
+
+
+
+                                                                                 
+                                                                                 
+}
+
+int main()
+{
+  displayName();
+  displayLogo();
+  displayInitRestaurant();
 
     // Create a Toppings object to manage toppings.
     Toppings toppings;
@@ -440,6 +471,9 @@ cout<<"                                            |___/                        
     Table table8("T8");
     Table table9("T9");
     Table table10("T10");
+
+    sleep(2);
+    displayName();
 
     cout<<endl<<"============================="<<endl;
     cout<<"Waiters signing in for shift"<<endl;
@@ -468,13 +502,18 @@ cout<<"                                            |___/                        
     waiter9.assignTable(&table9);
     waiter10.assignTable(&table10);
 
+
+
     std::vector<Waiter> allWaiters = {waiter1, waiter2, waiter3, waiter4, waiter5, waiter6, waiter7, waiter8, waiter9, waiter10};
     // Create MaitreD with tables
 
     std::vector<Table> allTables = {table1, table2, table3, table4, table5};
     std::vector<Table> allTables2 = {table6, table7, table8, table9, table10};
     std::vector<Table> allTables3 = {table1, table2, table3, table4, table5, table6, table7, table8, table9, table10};
-    
+
+    sleep(2);
+    displayName();
+
     cout<<endl<<"Allocating tables for reservations"<<endl;
     ReservationStrategy *reservationStrategy = new ReservationStrategy(allTables);
     MaitreD maitreD(reservationStrategy);
@@ -539,7 +578,9 @@ cout<<"                                            |___/                        
         case 3:
         {
             // Display available tables
+            cout<<"Tables for Reservations"<<endl;
             maitreD1.displayAvailableTables();
+            cout<<"Tables for Walk-ins"<<endl;
             maitreD.displayAvailableTables();
 
             break;

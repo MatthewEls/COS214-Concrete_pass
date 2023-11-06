@@ -187,7 +187,7 @@
 //             if (selectedPizza)
 //             {
 //                 // Ask if the customer wants additional toppings
-//                 cout << "Would you like to add additional toppings? (yes/no): ";
+//                 cout << "Would you like to add additional toppings or drinks? (yes/no): ";
 //                 string additionalToppingsChoice;
 //                 cin >> additionalToppingsChoice;
 
