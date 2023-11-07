@@ -1,4 +1,0 @@
-https://github.com/Multimedia-Overachievers/COS214-Project/blob/main/Docs/DefinitiveStyleGuide.md
-https://gist.github.com/earonesty/ccee25a56be7adeb5f670cf44e5fa479
-https://softwareengineering.stackexchange.com/questions/196706/creating-a-coding-standards-document
-https://barrgroup.com/embedded-systems/books/embedded-c-coding-standard
