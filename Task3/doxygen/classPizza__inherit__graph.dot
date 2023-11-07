@@ -1,0 +1,15 @@
+digraph "Pizza"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="Pizza",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="A class representing a pizza menu item."];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="MenuItem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classMenuItem.html",tooltip="An abstract base class for menu items."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Godfather",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classGodfather.html",tooltip="A class representing a Godfather pizza with customizable toppings."];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Margherita",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classMargherita.html",tooltip="A class representing a Margherita pizza with customizable toppings."];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Miami",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classMiami.html",tooltip="A class representing a Miami pizza with customizable toppings."];
+}
