@@ -1,3 +1,0 @@
-JohnDoe 50.00
-AliceSmith 25.00
-BobJohnson 10.00

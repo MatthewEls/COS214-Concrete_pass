@@ -1,6 +1,7 @@
 #include "paymentMethod.h"
 #include "splitBill.h"
 #include <iostream>
+#include <iomanip>
 
 splitBill::splitBill(int x)
 {
@@ -9,7 +10,8 @@ splitBill::splitBill(int x)
 
 void splitBill::pay(double amount)
 {
-    std::cout << "The bill is split, each person pays R" << (amount / div) * 1.1 << std::endl; // apply taxes
+    std::cout << std::setprecision(2)<<std::fixed;
+    std::cout << "The bill is split, each person pays R" << amount / div << std::endl;
 }
 
 double splitBill::calculateTotal(double subtotal, double out)

@@ -17,7 +17,11 @@ Toppings::Toppings() {
         "Figs",
         "Mushrooms",
         "Olives",
-        "Garlic"
+        "Garlic",
+        "Coke",
+        "Pepsi",
+        "Fanta",
+        "Water"
     };
 
     toppingDescriptions = {
@@ -31,7 +35,11 @@ Toppings::Toppings() {
         {"Figs", "Fresh figs"},
         {"Mushrooms", "Sliced mushrooms"},
         {"Olives", "Assorted olives"},
-        {"Garlic", "Roasted garlic cloves"}
+        {"Garlic", "Roasted garlic cloves"},
+        {"Coke","Bottled Coke (Drink)"},
+        {"Pepsi","Bottled Pepsi (Drink)"},
+        {"Fanta","Bottled Fanta (Drink)"},
+        {"Water","Bottled Water (Drink)"},
     };
 
     toppingPrices = {
@@ -45,7 +53,11 @@ Toppings::Toppings() {
         {"Figs", 26.17},
         {"Mushrooms", 18.5},
         {"Olives", 6.26},
-        {"Garlic", 3.14}
+        {"Garlic", 3.14},
+        {"Coke",15.50},
+        {"Pepsi",15.50},
+        {"Fanta",15.50},
+        {"Water",9.99}
     };
 }
 

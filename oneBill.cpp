@@ -1,10 +1,11 @@
 #include "OneBill.h"
 #include <iostream>
-
+#include <iomanip>
 
 void oneBill::pay(double amount) 
     {
-        std::cout << "One person pays R" << amount * 1.1 << std::endl;
+        std::cout << std::setprecision(2)<<std::fixed;
+        std::cout << "One person pays R" << amount << std::endl;
     }
 
 

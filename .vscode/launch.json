@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": ".",
-      "program": "build/Debug/outDebug",
+      "cwd": "/mnt/c/Users/matthew/Nextcloud/University/Third Year 2023/COS 214 - Software Modelling/Practical Assignments/GITVersion 8/COS214-Concrete_pass",
+      "program": "/mnt/c/Users/matthew/Nextcloud/University/Third Year 2023/COS 214 - Software Modelling/Practical Assignments/GITVersion 8/COS214-Concrete_pass/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

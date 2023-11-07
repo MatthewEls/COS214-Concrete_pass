@@ -3,15 +3,7 @@
 #include "Table.h"
 #include "Reservation.h"
 #include "OrderCommand.h" // Include Reservation's full definition
-#include "oneBill.h"
-#include "TabCalculator.h"
-#include "StandardTabCalculator.h"
-#include "HappyHourTabCalculator.h"
 #include <iostream>
-#include <string>
-#include <regex>
-#include <sstream>
-
 using namespace std;
 
 Customer::Customer(const std::string &name, int partySize, MaitreD *maitreD) : name(name), partySize(partySize), maitreD(maitreD) {}
@@ -49,7 +41,6 @@ void Customer::makeReservation(int partySize, const std::string &reservationTime
 
         // Notify the MaitreD to add the customer to the list of reservations
         maitreD->addCustomerWithReservation(reservation);
-        hasReservation = true;
     }
     else
     {
@@ -139,9 +130,9 @@ void Customer::placeOrder(Command* command) {
     if (orders.size() > 0) {
         std::cout << "Order placed successfully." << std::endl;}
 
-    
+    cout << "Order sent to kitchen by waiter" << endl;
     command->execute();
-    cout << "Command Executed." << endl;
+   
 }
 
 
@@ -204,95 +195,4 @@ void Customer::ReceveMeal(Meal* m){
     m->outputContents();
     cout<<"YUM<3\n";
     delete m;
-}
-
-Customer::Customer(bool hasReservation, const std::string &reservationTime)
-    : hasReservation(hasReservation), reservationTime(reservationTime), strat(0),
-      tabCalculator(nullptr), hasOutstandingTab(false), outstandingTabAmount(0.0) {}
-
-void Customer::setPaymentStrategy(paymentMethod *strategy)
-{
-    strat = strategy;
-}
-
-double Customer::calculateTab(double subtotal, double os)
-{
-
-    if (strat)
-    {
-        double total = strat->calculateTotal(subtotal, os);
-        if (tabCalculator)
-        {
-            total = tabCalculator->calculateTab(total, os);
-        }
-        return total;
-    }
-    else
-    {
-        std::cerr << "Payment strategy not set." << std::endl;
-        return 0.0;
-    }
-}
-
-TabCalculator *Customer::getTabCalculator()
-{
-    if (hasReservation && isDuringHappyHour())
-    {
-        return new HappyHourTabCalculator();
-    }
-    else
-    {
-        return new StandardTabCalculator();
-    }
-}
-
-bool Customer::isDuringHappyHour()
-{
-    // Check the time and date for happy hour
-    // Return true if it's within the happy hour timeframe
-    return happyH;
-}
-
-void Customer::setTabCalculator(TabCalculator *calculator)
-{
-    tabCalculator = calculator;
-}
-
-bool Customer::checkTime(std::string time)
-{
-    // Define a regex pattern to match the time part "HH:mm" in a timestamp format "YYYY-MM-DD HH:mm"
-    std::regex timeRegex("((17:\\d{2})|(18:00))"); // Matches times between 17:00 and 18:00
-    happyH = std::regex_search(time, timeRegex);
-    return happyH;
-}
-
-void Customer::setOutstandingTab(double amount)
-{
-    if (hasOutstandingTab)
-    {
-        outstandingTabAmount = amount;
-    }
-    else
-    {
-        std::cerr << "Customer does not have a tab." << std::endl;
-    }
-}
-
-double Customer::getOutstandingTabAmount() const
-{
-    return outstandingTabAmount;
-}
-
-bool Customer::hasTab()
-{
-    return hasOutstandingTab;
-}
-
-void Customer::setHasTab(bool hasTabStatus)
-{
-    hasOutstandingTab = hasTabStatus;
-}
-
-bool Customer::hasRes(){
-    return hasReservation;
 }

@@ -20,31 +20,38 @@
 #include "paymentMethod.h"
 #include "Tab.h"
 #include "ReadyState.h"
-#include "TabCalculator.h"
-#include "StandardTabCalculator.h"
-#include "HappyHourTabCalculator.h"
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <algorithm> // For std::remove and std::remove_if
+#include <cstdlib>  // For system function
+#include <unistd.h> // For sleep function
+#include <iomanip>
 
-using namespace std;
+
+// Color escape sequences
+const std::string RESET = "\033[0m";
+const std::string BLACK = "\033[30m";
+const std::string RED = "\033[31m";
+const std::string GREEN = "\033[32m";
+const std::string YELLOW = "\033[33m";
+const std::string BLUE = "\033[34m";
+const std::string MAGENTA = "\033[35m";
+const std::string CYAN = "\033[36m";
+const std::string WHITE = "\033[37m";
+const std::string BOLD = "\033[1m";
 
 void displayMainMenu()
 {
-    cout << "=============================================" << endl;
-    cout << "         Restaurant Reservation System       " << endl;
-    cout << "=============================================" << endl;
-    cout << "1. Make a Reservation" << endl;
-    cout << "2. Walk-in Customer" << endl;
-    cout << "3. Display Available Tables" << endl;
-    cout << "4. Display Reservations" << endl;
-    cout << "5. View Waiters Assigned to Tables" << endl;
-    cout << "6. Leave Table" << endl;
-    cout << "7. Order Pizza" << endl; // Added option to order pizza
-    cout << "8. Exit" << endl;
-    cout << "=============================================" << endl;
-    cout << "Please enter your choice: ";
+    std::cout << "=============================================" << std::endl;
+    std::cout << "         Restaurant Reservation System       " << std::endl;
+    std::cout << "=============================================" << std::endl;
+    std::cout << "1. Make a Reservation" << std::endl;
+    std::cout << "2. Walk-in Customer" << std::endl;
+    std::cout << "3. Display Available Tables" << std::endl;
+    std::cout << "4. Display Reservations" << std::endl;
+    std::cout << "5. View Waiters Assigned to Tables" << std::endl;
+    std::cout << "6. Leave Table" << std::endl;
+    std::cout << "7. Order Pizza" << std::endl; // Added option to order pizza
+    std::cout << "8. Exit" << std::endl;
+    std::cout << "=============================================" << std::endl;
+    std::cout << "Please enter your choice: ";
 }
 
 void viewWaiters(std::vector<Table> &allTables, std::vector<Waiter> &allWaiters)
@@ -105,7 +112,7 @@ void addCustomerAndMakeReservation(std::vector<Customer> &customers, MaitreD &ma
     std::cin >> name;
     std::cout << "Enter party size: ";
     std::cin >> partySize;
-    std::cout << "Enter reservation time (e.g., 2023-10-31 18:30): ";
+    std::cout << "Enter expected time (e.g., 18:30): ";
     std::cin.ignore(); // Clear the newline character
     std::getline(std::cin, reservationTime);
 
@@ -113,10 +120,6 @@ void addCustomerAndMakeReservation(std::vector<Customer> &customers, MaitreD &ma
     Customer &customer = customers.back(); // Get a reference to the newly added customer
     customer.makeReservation(partySize, reservationTime);
     customer.viewReservations();
-    if (customer.checkTime(reservationTime)){
-        customer.isDuringHappyHour();
-    }
-
 }
 
 void viewWaitersAssignedToTables1(Waiter waiter)
@@ -135,22 +138,22 @@ void addCustomerAndMakeWalkin(std::vector<Customer> &customers, MaitreD &maitreD
     std::cin >> name;
     std::cout << "Enter party size: ";
     std::cin >> partySize;
-    std::cin.ignore(); // Clear the newline character
-    std::getline(std::cin, reservationTime);
+    // std::cin.ignore(); // Clear the newline character
+    // std::getline(std::cin, reservationTime);
 
     customers.push_back(Customer(name, partySize, &maitreD));
-    cout << "HERE" << endl;
+
     Customer &customer = customers.back(); // Get a reference to the newly added customer
     customer.walkIn(name, partySize);
     maitreD.displayWalkIns();
 }
 
 // Function to remove a customer by name
-void removeCustomerByName(std::vector<Customer> &customers)
+void removeCustomerByName(std::vector<Customer> &customers,string customerName)
 {
-    std::string customerName;
-    std::cout << "Enter the name of the customer to remove from the table: ";
-    std::cin >> customerName;
+    //std::string customerName;
+    //std::cout << "Enter the name of the customer to remove from the table: ";
+    //std::cin >> customerName;
 
     // Find the customer by name
     // Find the customer by name
@@ -211,6 +214,9 @@ vector<string> splitString(const string &input, char delimiter)
 void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kitchen, std::vector<Waiter> &waiter)
 {
 
+    vector<Command*> tableOrder;
+
+
     while (true)
     {
         cout << "Welcome to the pizza menu. Please select a pizza from the menu (enter item number):" << endl;
@@ -221,10 +227,15 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
         cin >> choice;
 
         if (choice == 0)
-        {
-            customer.displayOrder(); // Display the current order
-            cout << "Total Price: R" << customer.getOrderTotal() << endl;
-            cout << "Thank you for ordering. Goodbye!" << endl;
+        { 
+             for (Command* orderCommand : tableOrder) {
+                customer.placeOrder(orderCommand);
+             }
+            //  customer.getOrderTotal();
+            //customer.displayOrder(); // Display the current order
+            float total = customer.getOrderTotal();
+            cout << "Total "<<std::setprecision(2)<<std::fixed<<"R"<<total<<endl;
+            //cout << "Thank you for ordering. Goodbye!" << endl;
             break;
         }
         else if (choice > 0 && choice <= menu.getItemsCount())
@@ -235,7 +246,7 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
             if (selectedPizza)
             {
                 // Ask if the customer wants additional toppings
-                cout << "Would you like to add additional toppings? (yes/no): ";
+                cout << "Would you like to add additional toppings or drinks? (yes/no): ";
                 string additionalToppingsChoice;
                 cin >> additionalToppingsChoice;
 
@@ -274,13 +285,14 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
                             if (waiter.getTable()->getName() == customer.getReservations()[i].getTable()->getSubTable()->getName())
                             {
                                 /* code */
-                                cout << "Waiter found" << endl;
+                                cout << YELLOW<<"\t\t\t\tWaiter found" << RESET<<endl;
 
                                 waiter.getTable()->addObserver(&waiter);
                                 waiter.getTable()->notifyWaiters();
                                 Command *orderCommand = new OrderCommand(kitchen, selectedPizza, &waiter, &customer);
-                                customer.placeOrder(orderCommand);
-                                cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
+                                tableOrder.push_back(orderCommand);
+                                //customer.placeOrder(orderCommand);
+                                // cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
                                 // i++;
                                 break;
                             }
@@ -288,19 +300,20 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
                         else if (waiter.getTable()->getName() == customer.getReservations()[i].getTable()->getName())
                         {
                             // Table *comp = waiter.getTable()->getSubTable();
-                            cout << "Waiter found" << endl;
+                            cout <<YELLOW<< "\t\t\t\tWaiter found" <<RESET<< endl;
 
                             waiter.getTable()->addObserver(&waiter);
                             waiter.getTable()->notifyWaiters();
                             Command *orderCommand = new OrderCommand(kitchen, selectedPizza, &waiter, &customer);
-                            customer.placeOrder(orderCommand);
-                            cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
+                            tableOrder.push_back(orderCommand);
+                            //customer.placeOrder(orderCommand);
+                            // cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
                             // i++;
                             break;
                         }
                         else
                         {
-                            cout << "Waiter not found" << endl;
+                            cout <<YELLOW<< "\t\t\t\tWaiter not found" <<RESET<< endl;
                             // cout << waiter.getTable()->getName() << endl;
                         }
                     }
@@ -316,13 +329,14 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
                             if (waiter.getTable()->getName() == customer.getWalkIns()[i].getTable()->getSubTable()->getName())
                             {
                                 /* code */
-                                cout << "Waiter found" << endl;
+                                cout <<YELLOW<< "\t\t\t\tWaiter found" <<RESET<< endl;
 
                                 waiter.getTable()->addObserver(&waiter);
                                 waiter.getTable()->notifyWaiters();
                                 Command *orderCommand = new OrderCommand(kitchen, selectedPizza, &waiter, &customer);
-                                customer.placeOrder(orderCommand);
-                                cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
+                                tableOrder.push_back(orderCommand);
+                                //customer.placeOrder(orderCommand);
+                                // cout << "Your order for  " << selectedPizza->getItemType() << " has been placed." << endl;
                                 // i++;
                                 break;
                             }
@@ -330,17 +344,18 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
                         else if (waiter.getTable()->getName() == customer.getWalkIns()[i].getTable()->getName())
                         {
 
-                            cout << "Waiter found" << endl;
+                            cout <<YELLOW<<"\t\t\t\tWaiter found" <<RESET<< endl;
                             Command *orderCommand = new OrderCommand(kitchen, selectedPizza, &waiter, &customer);
-                            customer.placeOrder(orderCommand);
-                            cout << "Your order for Here" << selectedPizza->getItemType() << " has been placed." << endl;
+                            tableOrder.push_back(orderCommand);
+                            //customer.placeOrder(orderCommand);
+                            // cout << "Your order for Here" << selectedPizza->getItemType() << " has been placed." << endl;
                             // i++;
                             break;
                         }
                         else
                         {
                             /* code */
-                            cout << "Waiter not found" << endl;
+                            cout <<YELLOW<< "\t\t\t\tWaiter not found" << RESET<<endl;
                         }
                         
                     }
@@ -348,7 +363,7 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
                 else
                 {
                     /* code */
-                    cout << "Waiter not assigned to a table" << endl;
+                    cout <<YELLOW<< "\t\t\t\tWaiter not assigned to a table" <<RESET<< endl;
                 }
 
                 // Example: Get the description, price, and toppings of a specific pizza.
@@ -375,143 +390,69 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
     }
 }
 
-void updateOutstandingAmountInFile(const std::string &filename, const std::string &customerName, double newOutstandingAmount)
+void displayLogo(){
+    cout<<endl<<"           @@  @@ @@  @@"<<CYAN<<"                  @@@@@@@@@@@@@@@@@                 "<<WHITE<<"      @@@@@             "<<endl;
+    cout<<"           @@  @@ @@  @@"<<CYAN<<"                @@@@@@@@@@@@@@@@@@@@@(              "<<WHITE<<"    @@@@@@@@#           "<<endl;
+    cout<<"           @@  @@ @@  @@"<<CYAN<<"            .@@@@,      *@@@@@(       @@@@@         "<<WHITE<<"    @@@@@@@@@           "<<endl;
+    cout<<"           @@  @@ @@  @@"<<CYAN<<"          @@@*   %@@@             #@@@    @@@@      "<<WHITE<<"    @@@@@@@@@           "<<endl;
+    cout<<"           @@  @@ @@  @@"<<CYAN<<"       (@@@   @@                       @@   #@@@    "<<WHITE<<"    @@@@@@@@@           "<<endl;
+    cout<<"           @@@@@@@@@@@@@ "<<CYAN<<"     @@@  ,@*                            @@  #@@(   "<<WHITE<<"   @@@@@@@@@           "<<endl;
+    cout<<"           @@@@@@@@@@@@@"<<CYAN<<"    (@@   @%                                @/  @@@   "<<WHITE<<"  @@@@@@@@@           "<<endl;
+    cout<<"            @@@@   @@@@ "<<CYAN<<"   /@@  .@                                   @@  @@@  "<<WHITE<<"  @@@@@@@@@           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"     @@   @                                     @@  @@* "<<WHITE<<"  @@@@@@@@@           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"    @@@  @@                                      @  @@@ "<<WHITE<<"  @@@@@@@@@           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"    @@@  @                                       @  /@@ "<<WHITE<<"  @@@@,  %@           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"    @@@  @#                                      @  @@@  "<<WHITE<<" @@@@    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"     @@  &@                                     @@  @@@ "<<WHITE<<"  @@@@    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"     @@@  @@                                   .@  @@@    "<<WHITE<<"   @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"      @@@  @@                                 @@  &@@    "<<WHITE<<"    @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"       @@@   @@                              @(  @@@    "<<WHITE<<"     @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"         @@@   @@                         @@   @@@#     "<<WHITE<<"     @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"           @@@    @@@                 .@@,   @@@#     "<<WHITE<<"       @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"             @@@@@     @@@@@@@@@@@@@#    .@@@@        "<<WHITE<<"       @    @           "<<endl;
+    cout<<"               @   @  "<<CYAN<<"                 @@@@@@,            @@@@@@              "<<WHITE<<"     @    @           "<<endl;
+    cout<<"                @@@/  "<<CYAN<<"                       @@@@@@@@@@@@@*                   "<<WHITE<<"      @@@@            "<<endl<<endl;
+}
+void displayName()
 {
-    std::ifstream inputFile(filename);
-    std::ofstream tempFile("temp.txt");
 
-    if (!inputFile.is_open() || !tempFile.is_open())
-    {
-        std::cerr << "Failed to open file." << std::endl;
-        return;
-    }
+    system("clear");
+      cout<<CYAN;
+        cout<<"  ______  _                                    ______            _               "<<endl;
+        cout<<" |  ____|| |                                  |  ____|          (_)              "<<endl;
+        cout<<" | |__   | |  __ _ __   __ ___   _   _  _ __  | |__  _   _  ___  _   ___   _ __  "<<endl;
+        cout<<" |  __|  | | / _` |\\ \\ / // _ \\ | | | || '__| |  __|| | | |/ __|| | / _ \\ | '_ \\ "<<endl;
+        cout<<" | |     | || (_| | \\ V /| (_) || |_| || |    | |   | |_| |\\__ \\| || (_) || | | |"<<endl;
+        cout<<" |_|     |_| \\__,_|  \\_/  \\___/  \\__,_||_|    |_|    \\__,_||___/|_| \\___/ |_| |_|"<<endl<<endl;
+        cout<<RESET;
 
-    std::string line;
-    bool found = false;
-    while (std::getline(inputFile, line))
-    {
-        std::istringstream iss(line);
-        std::string name;
-        double outstandingAmount;
 
-        if (iss >> name >> outstandingAmount)
-        {
-            if (customerName == name)
-            {
-                tempFile << name << " " << newOutstandingAmount << "\n";
-                found = true;
-            }
-            else
-            {
-                tempFile << name << " " << outstandingAmount << "\n";
-            }
-        }
-    }
-
-    inputFile.close();
-    tempFile.close();
-
-    // Replace the original file with the updated temp file
-    if (found)
-    {
-        if (remove(filename.c_str()) != 0)
-        {
-            perror("Error deleting file");
-        }
-        if (rename("temp.txt", filename.c_str()) != 0)
-        {
-            perror("Error renaming file");
-        }
-    }
-    else
-    {
-        std::cerr << "Customer not found in the file." << std::endl;
-    }
 }
 
-
-
-void removeSpaces(std::string &str)
+void displayInitRestaurant()
 {
-    // Remove spaces from a string
-    str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
-}
+cout<<"  _____       _ _   _       _ _     _                               _                              _"<<endl;    
+cout<<" |_   _|     (_) | (_)     | (_)   (_)                             | |                            | |   "<<endl;   
+cout<<"   | |  _ __  _| |_ _  __ _| |_ ___ _ _ __   __ _     _ __ ___  ___| |_ __ _ _   _ _ __ __ _ _ __ | |_  "<<endl;
+cout<<"   | | | '_ \\| | __| |/ _` | | / __| | '_ \\ / _` |   | '__/ _ \\/ __| __/ _` | | | | '__/ _` | '_ \\| __| "<<endl;
+cout<<"  _| |_| | | | | |_| | (_| | | \\__ \\ | | | | (_| |   | | |  __/\\__ \\ || (_| | |_| | | | (_| | | | | |_  "<<endl;
+cout<<" |_____|_| |_|_|\\__|_|\\__,_|_|_|___/_|_| |_|\\__, |   |_|  \\___||___/\\__\\__,_|\\__,_|_|  \\__,_|_| |_|\\__| "<<endl;
+cout<<"                                             __/ |                                                    "<<endl;
+cout<<"                                            |___/                                                     "<<endl<<endl;
 
-void loadCustomersWithTabs(Customer *customer, const std::string &filename)
-{
-    std::ifstream file(filename);
 
-    if (!file.is_open())
-    {
-        std::cerr << "Failed to open file." << std::endl;
-        return;
-    }
 
-    std::string line;
-    std::string selectedName = customer->getName();
-    removeSpaces(selectedName); // Remove spaces from the selected customer's name
 
-    while (std::getline(file, line))
-    {
-        std::istringstream iss(line);
-        std::string name;
-        double outstandingAmount;
-
-        if (iss >> name >> outstandingAmount)
-        {
-            removeSpaces(name);
-            // for (Customer &customer : customers)
-            // {
-            if (selectedName == name)
-            {
-                customer->setHasTab(true);
-                customer->setOutstandingTab(outstandingAmount);
-                break;
-            }
-            //   }
-        }
-    }
-
-    file.close();
-    cout << customer->hasTab() << endl;
-   // return customer->hasTab();
-}
-double getOutstandingAmountFromTextFile(const std::string &filename, const std::string &customerName)
-{
-    std::ifstream file(filename);
-
-    if (!file.is_open())
-    {
-        std::cerr << "Failed to open file." << std::endl;
-        return 0.0; // Return 0.0 to indicate an error or no outstanding amount.
-    }
-
-    double outstandingAmount = 0.0;
-    std::string line;
-
-    while (std::getline(file, line))
-    {
-        std::istringstream iss(line);
-        std::string name;
-
-        if (iss >> name >> outstandingAmount)
-        {
-            if (customerName == name)
-            {
-                file.close();
-                return outstandingAmount; // Return the outstanding amount if the customer is found.
-            }
-        }
-    }
-
-    file.close();
-
-    // If the customer was not found in the file, return 0.0 or another suitable value.
-    return 0.0;
+                                                                                 
+                                                                                 
 }
 
 int main()
 {
+  displayName();
+  displayLogo();
+  displayInitRestaurant();
+
     // Create a Toppings object to manage toppings.
     Toppings toppings;
     // Kitchen kitchen;
@@ -519,30 +460,38 @@ int main()
     Kitchen kitchen(&headChef);
     std::vector<Customer> customers;
 
-    Table table1("Table1");
-    Table table2("Table 2");
-    Table table3("Table 3");
-    Table table4("Table 4");
-    Table table5("Table 5");
-    Table table6("Table 6");
-    Table table7("Table 7");
-    Table table8("Table 8");
-    Table table9("Table 9");
-    Table table10("Table 10");
+    cout<<"============================="<<endl;
+    cout<<"Creating tables"<<endl;
+    cout<<"============================="<<endl<<endl;
+    Table table1("T1");
+    Table table2("T2");
+    Table table3("T3");
+    Table table4("T4");
+    Table table5("T5");
+    Table table6("T6");
+    Table table7("T7");
+    Table table8("T8");
+    Table table9("T9");
+    Table table10("T10");
 
-    Waiter waiter1("Waiter 1", 1000.0);
-    Waiter waiter2("Waiter 2", 950.0);
-    Waiter waiter3("Waiter 3", 900.0);
-    Waiter waiter4("Waiter 4", 850.0);
-    Waiter waiter5("Waiter 5", 800.0);
-    Waiter waiter6("Waiter 6", 750.0);
-    Waiter waiter7("Waiter 7", 700.0);
-    Waiter waiter8("Waiter 8", 650.0);
-    Waiter waiter9("Waiter 9", 600.0);
-    Waiter waiter10("Waiter 10", 550.0);
+    displayName();
+
+    cout<<endl<<"============================="<<endl;
+    cout<<"Waiters signing in for shift"<<endl;
+    cout<<"============================="<<endl<<endl;
+    Waiter waiter1("James Smith", 1000.0);
+    Waiter waiter2("Lucy Waters", 950.0);
+    Waiter waiter3("Tina Turner", 900.0);
+    Waiter waiter4("Siya Zulu", 850.0);
+    Waiter waiter5("Jane Turner", 800.0);
+    Waiter waiter6("Celemusa Zondi", 750.0);
+    Waiter waiter7("Ashton Wheel", 700.0);
+    Waiter waiter8("Jason Judge", 650.0);
+    Waiter waiter9("Anne Irish", 600.0);
+    Waiter waiter10("Andile Dube", 550.0);
 
     table1.setWaiter(&waiter1);
-
+    cout<<endl<<"Allocating waiters to tables for shift"<<endl;
     waiter1.assignTable(&table1);
     waiter2.assignTable(&table2);
     waiter3.assignTable(&table3);
@@ -554,31 +503,46 @@ int main()
     waiter9.assignTable(&table9);
     waiter10.assignTable(&table10);
 
+
+
     std::vector<Waiter> allWaiters = {waiter1, waiter2, waiter3, waiter4, waiter5, waiter6, waiter7, waiter8, waiter9, waiter10};
     // Create MaitreD with tables
 
     std::vector<Table> allTables = {table1, table2, table3, table4, table5};
     std::vector<Table> allTables2 = {table6, table7, table8, table9, table10};
     std::vector<Table> allTables3 = {table1, table2, table3, table4, table5, table6, table7, table8, table9, table10};
+
+
+    cout<<endl<<"Allocating tables for reservations"<<endl;
     ReservationStrategy *reservationStrategy = new ReservationStrategy(allTables);
     MaitreD maitreD(reservationStrategy);
+
+    cout<<endl<<"Allocating tables for walk-ins"<<endl;
     WalkInStrategy *walkInStrategy = new WalkInStrategy(allTables2);
     MaitreD maitreD1(walkInStrategy);
 
-    TabCalculator* tabCalculator = nullptr;
 
-    // Create instances of different pizza types.
+    cout<<endl<<"============================="<<endl;
+    cout<<"Designing different pizza types"<<endl;
+    cout<<"============================="<<endl<<endl;
     Godfather godfatherPizza(toppings);
+    godfatherPizza.displayToppings();
     Margherita margheritaPizza(toppings);
+    margheritaPizza.displayToppings();
     Miami miamiPizza(toppings);
+    miamiPizza.displayToppings();
 
-    cout << "Instantiation/Creation of the 3 different base pizza types." << endl;
-    cout << endl;
+
+    cout<<endl<<"============================="<<endl;
+    cout<<"Creating Menu for shift"<<endl;
+    cout<<"============================="<<endl<<endl;
 
     Menu menu;
     menu.addItem(&godfatherPizza);
     menu.addItem(&margheritaPizza);
     menu.addItem(&miamiPizza);
+
+    menu.displayMenu();
 
     // Call the orderPizza method to handle pizza ordering
     // orderPizza(menu, toppings, customer, kitchen);
@@ -613,7 +577,9 @@ int main()
         case 3:
         {
             // Display available tables
+            cout<<"Tables for Reservations"<<endl;
             maitreD1.displayAvailableTables();
+            cout<<"Tables for Walk-ins"<<endl;
             maitreD.displayAvailableTables();
 
             break;
@@ -659,13 +625,13 @@ int main()
             if (selectedCustomer != nullptr)
             {
                 // Display the selected customer's order
-                selectedCustomer->displayOrder();
-                cout << "Total Price: R " << selectedCustomer->getOrderTotal() << endl;
+                double total = selectedCustomer->getOrderTotal();
+                cout <<std::setprecision(2)<<std::fixed<< "Total R"<<total<<endl;
                 cout << "========================================================================================" << endl;
-                if (selectedCustomer->getOrderTotal() == 0)
+                if (total == 0)
                 {
                     cout << "No order to pay for" << endl;
-                    removeCustomerByName(customers);
+                    removeCustomerByName(customers,customerName);
                     break;
                 }
                 cout << "How would you Like to Pay" << endl;
@@ -699,51 +665,10 @@ int main()
                     }
                     else if (splitChoice == 3)
                     {
-                        loadCustomersWithTabs(selectedCustomer, "hasTab.txt");
-                         if (selectedCustomer->hasTab())
-                        {
-                            /* code */
-                            
-                            Tab *tab = new Tab("hasTab.txt", selectedCustomer->getName());
-                            selectedCustomer->setPaymentMethod(tab);
-                            if(selectedCustomer->isDuringHappyHour() == true){
-                                tabCalculator = new HappyHourTabCalculator();
-                              //  break;
-                            }
-                            else
-                            {
-                                tabCalculator = new StandardTabCalculator();
-                            }
-                           
-                             if (tabCalculator != nullptr)
-                            {
-                                selectedCustomer->setTabCalculator(tabCalculator);
-                            }
-                            double os = getOutstandingAmountFromTextFile("hasTab.txt", selectedCustomer->getName());
-                            selectedCustomer->payOrder(selectedCustomer->calculateTab(selectedCustomer->getOrderTotal(), os));
-                        }
-                        else
-                        {
-                            cout << "Customer does not have a tab. Choose another payment method." << endl;
-                            cout << "1. One person pays the whole amount" << endl;
-                            cout << "2. Split the bill" << endl;
-                            int otherpaymentChoice;
-                            cin >> otherpaymentChoice;
-                            if (otherpaymentChoice == 1)
-                            {
-                                int size = selectedCustomer->getPartySize();
-                                splitBill *bill = new splitBill(size);
-                                selectedCustomer->setPaymentMethod(bill);
-                                selectedCustomer->payOrder(selectedCustomer->getOrderTotal());
-                            }
-                            else if (otherpaymentChoice == 2)
-                            {
-                                int size = selectedCustomer->getPartySize();
-                                oneBill *bill = new oneBill();
-                                selectedCustomer->setPaymentMethod(bill);
-                                selectedCustomer->payOrder(selectedCustomer->getOrderTotal());
-                            }
-                        }
+                        /* code */
+                        Tab *tab = new Tab();
+                        selectedCustomer->setPaymentMethod(tab);
+                        selectedCustomer->payOrder(selectedCustomer->getOrderTotal());
                     }
                     else
                     {
@@ -754,7 +679,7 @@ int main()
                 {
                     cout << "Customer not found. Please enter a valid customer name." << endl;
                 }
-                removeCustomerByName(customers);
+                removeCustomerByName(customers,customerName);
                 cout << "Thank you for using the Restaurant Reservation System. Goodbye!" << endl;
                 break;
             }
@@ -804,6 +729,16 @@ int main()
             // Exit the program
             cout << "Thank you for using the Restaurant Reservation System. Goodbye!" << endl;
             return 0;
+        }
+        case 9:
+        {
+            Customer *selectedCustomer = nullptr;
+            cout << "Customers";
+            for (Customer &c : customers)
+            {
+               cout << c.getName()<<endl;
+            }
+            break;
         }
 
         default:

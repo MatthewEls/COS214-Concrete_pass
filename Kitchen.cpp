@@ -24,7 +24,7 @@ void Kitchen::prepareOrder(Pizza* pizza, Waiter* w, CustomerProxy* c) {
     Director d(&b);
     d.make(pizza);
     Meal* m=b.getResults();
-    m->outputContents();     //optional
+    //m->outputContents();     //optional
     fetch=w;
     orderer->setCustomer(c);
     chain->handle(m);
