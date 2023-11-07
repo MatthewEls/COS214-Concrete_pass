@@ -46,9 +46,9 @@ void displayMainMenu()
     std::cout << "2. Walk-in Customer" << std::endl;
     std::cout << "3. Display Available Tables" << std::endl;
     std::cout << "4. Display Reservations" << std::endl;
-    std::cout << "5. View Waiters Assigned to Tables" << std::endl;
+    std::cout << "5. Order Pizza" << std::endl; // Added option to order pizza
     std::cout << "6. Leave Table" << std::endl;
-    std::cout << "7. Order Pizza" << std::endl; // Added option to order pizza
+    std::cout << "7. View Waiters Assigned to Tables" << std::endl;
     std::cout << "8. View Customers" << std::endl;
     std::cout << "9. Exit" << std::endl;
     std::cout << "=============================================" << std::endl;
@@ -475,7 +475,8 @@ int main()
     Table table9("T9");
     Table table10("T10");
 
-    displayName();
+
+  
 
     cout<<endl<<"============================="<<endl;
     cout<<"Waiters signing in for shift"<<endl;
@@ -521,6 +522,15 @@ int main()
     cout<<endl<<"Allocating tables for walk-ins"<<endl;
     WalkInStrategy *walkInStrategy = new WalkInStrategy(allTables2);
     MaitreD maitreD1(walkInStrategy);
+
+
+    string wait;
+    cout<<"Press enter to continue..."<<endl;
+    // cin.ignore(); // Consume the newline character
+    getline(cin,wait);
+    displayName();
+    displayLogo();
+
 
 
     cout<<endl<<"============================="<<endl;
@@ -591,7 +601,7 @@ int main()
             maitreD.displayReservations();
             break;
         }
-        case 5:
+        case 7:
         {
             viewWaiters(allTables3, allWaiters);
             break;
@@ -685,7 +695,7 @@ int main()
                 break;
             }
         }
-        case 7:
+        case 5:
         {
             // Check if there are customers
             if (customers.empty())
