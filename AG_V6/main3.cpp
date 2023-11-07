@@ -733,11 +733,12 @@ int main()
         case 9:
         {
             Customer *selectedCustomer = nullptr;
-            cout << "Customers";
+            cout << "Customers:";
             for (Customer &c : customers)
             {
-               cout << c.getName()<<endl;
+               cout << c.getName()<<"\t";
             }
+            cout<<endl;
             break;
         }
 
