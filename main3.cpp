@@ -720,13 +720,17 @@ int main()
                                 selectedCustomer->setTabCalculator(tabCalculator);
                             }
                             double os = getOutstandingAmountFromTextFile("hasTab.txt", selectedCustomer->getName());
-                            selectedCustomer->payOrder(selectedCustomer->calculateTab(selectedCustomer->getOrderTotal(), os));
+                            double total = selectedCustomer->calculateTab(selectedCustomer->getOrderTotal(), os);
+                            selectedCustomer->payOrder(total);
+
+                            updateOutstandingAmountInFile("hasTab.txt", customerName, total);
                         }
                         else
                         {
                             cout << "Customer does not have a tab. Choose another payment method." << endl;
-                            cout << "1. One person pays the whole amount" << endl;
-                            cout << "2. Split the bill" << endl;
+                            cout << "1. Split the bill" << endl;
+                            cout << "2. One person pays the whole amount" << endl;
+                          
                             int otherpaymentChoice;
                             cin >> otherpaymentChoice;
                             if (otherpaymentChoice == 1)
