@@ -8,13 +8,13 @@
 
 using namespace std;
 Table::Table(const std::string& tableName) : name(tableName), state(new AvailableTableState()),cState(new NotReadyState) {
-     cout<<"Table "<<tableName<<" available for shift" << endl;
+     cout<<"\t\t\t\tTable "<<tableName<<" available for shift" << endl;
 }
 
 void Table::seatTable(int partySize) {
     if (partySize <= maxCapacity) {
         state->seatTable(*this);
-        cout<<"Table "<<name<<" is now occupied by a party of "<<partySize<<"."<<endl;
+        cout<<"\t\t\t\tTable "<<name<<" is now occupied by a party of "<<partySize<<"."<<endl;
     } else {
         std::cout << "Party size exceeds the maximum capacity of this table." << std::endl;
     }
@@ -27,7 +27,7 @@ void Table::seatTableComp(int partySize) {
 
 void Table::freeTable() {
     state->freeTable(*this);
-    cout<<"Table: "<<this->getName()<<" is now free"<<endl;
+    cout<<"\t\t\t\tTable: "<<this->getName()<<" is now free"<<endl;
 
 }
 

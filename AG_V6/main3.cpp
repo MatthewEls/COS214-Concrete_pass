@@ -142,7 +142,7 @@ void addCustomerAndMakeWalkin(std::vector<Customer> &customers, MaitreD &maitreD
     // std::getline(std::cin, reservationTime);
 
     customers.push_back(Customer(name, partySize, &maitreD));
-    cout << "HERE" << endl;
+
     Customer &customer = customers.back(); // Get a reference to the newly added customer
     customer.walkIn(name, partySize);
     maitreD.displayWalkIns();
@@ -474,7 +474,6 @@ int main()
     Table table9("T9");
     Table table10("T10");
 
-    sleep(2);
     displayName();
 
     cout<<endl<<"============================="<<endl;
@@ -513,8 +512,6 @@ int main()
     std::vector<Table> allTables2 = {table6, table7, table8, table9, table10};
     std::vector<Table> allTables3 = {table1, table2, table3, table4, table5, table6, table7, table8, table9, table10};
 
-    sleep(2);
-    displayName();
 
     cout<<endl<<"Allocating tables for reservations"<<endl;
     ReservationStrategy *reservationStrategy = new ReservationStrategy(allTables);
@@ -732,6 +729,16 @@ int main()
             // Exit the program
             cout << "Thank you for using the Restaurant Reservation System. Goodbye!" << endl;
             return 0;
+        }
+        case 9:
+        {
+            Customer *selectedCustomer = nullptr;
+            cout << "Customers";
+            for (Customer &c : customers)
+            {
+               cout << c.getName()<<endl;
+            }
+            break;
         }
 
         default:
