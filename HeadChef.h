@@ -2,6 +2,7 @@
 #define HEADCHEF_H
 
 #include "Employee.h"
+#include "Meal.h"
 #include <string>
 /**
  * @brief Class representing a HeadChef in a restaurant.
@@ -24,6 +25,8 @@ public:
      * @return The type of the employee (e.g., "Chef").
      */
     std::string getType() const override;
+
+    void decorate(Meal* m);
 };
 
 #endif

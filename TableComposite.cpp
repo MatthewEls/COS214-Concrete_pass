@@ -22,11 +22,16 @@ void TableComposite::addTable(Table *table)
     {
         cout<<"TABLE: "<<this->getName()<<" NOT AVAILABLE"<<endl;
     }
-    
-    
-
-    
+     
 }
+
+// std::string TableComposite::getName() const
+// {
+//     Table* c=getSubTable();
+//     return c->getName();
+// }
+
+
 
 void TableComposite::seatTable(int partySize)
 {
@@ -98,7 +103,14 @@ bool TableComposite::canJoin(int partySize) const
     return partySize <= combinedCapacity;
 }
 
+Table* TableComposite::getSubTable() const {
+
+    return joinedTables[0];
+}
 // ...
+bool TableComposite::isComposite() const {
+    return true;
+}
 
 TableComposite::~TableComposite()
 {

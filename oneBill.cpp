@@ -4,7 +4,7 @@
 
 void oneBill::pay(double amount) 
     {
-        std::cout << "One person pays R" << amount << std::endl;
+        std::cout << "One person pays R" << amount * 1.1 << std::endl;
     }
 
 

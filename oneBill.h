@@ -5,5 +5,5 @@ class oneBill : public paymentMethod
 {
 public:
     double calculateTotal(double subtotal, double) override;
-    void pay(double amount);
+    void pay(double amount) override;
 };

@@ -4,7 +4,7 @@
 
 class splitBill: public paymentMethod{
     public:
-        splitBill(int x) {};
+        splitBill(int x);
         void pay(double amount);
         double calculateTotal(double subtotal, double) override;
 

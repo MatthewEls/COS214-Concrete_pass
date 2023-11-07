@@ -16,3 +16,5 @@ Table* Reservation::getTable() const {
 const std::string& Reservation::getReservationTime() const {
     return reservationTime;
 }
+
+

@@ -8,7 +8,6 @@
 class Employee {
 protected:
     std::string type;
-    std::string name;
 
 public:
     Employee(const std::string& type);
@@ -24,7 +23,6 @@ public:
      */
     virtual std::string getType() const;
 
-    Employee();
 };
 
 #endif

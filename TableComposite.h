@@ -13,7 +13,7 @@ private:
 
 public:
     /**
-     * @brief Constructor for the TableComposite class.1
+     * @brief Constructor for the TableComposite class.
      * @param name The name of the composite table.
      */
     TableComposite(const std::string& name);
@@ -47,5 +47,12 @@ public:
      * @return true if the party can be accommodated, false otherwise.
      */
     bool canJoin(int partySize) const;
+    //std::string getName() const;
+
+bool isComposite() const;
+Table* getSubTable() const override;
+
+   
+
       ~TableComposite();
 };

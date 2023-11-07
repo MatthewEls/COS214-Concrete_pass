@@ -3,8 +3,10 @@
 #include <vector>
 #include <string>
 #include "Table.h"
-#include "Reservation.h"  // Include Reservation's full definition
-
+#include "Reservation.h" 
+#include "ReservationStrategy.h" // Include Reservation's full definition
+//#include "WalkIn.h"
+class WalkIn;
 /**
  * @brief The MaitreD class represents the restaurant manager who manages the tables and reservations.
  * 
@@ -16,7 +18,8 @@ public:
      * 
      * @param tables The vector of tables to be managed.
      */
-    MaitreD(const std::vector<Table>& tables);
+    MaitreD(BookingStrategy* strategy);
+    MaitreD();
 
     /**
      * @brief Find an available table for a given party size.
@@ -33,6 +36,8 @@ public:
      */
     void addCustomerWithReservation(const Reservation& reservation);
 
+    void addCustomerWithWalkIn(const WalkIn& walkIn);
+
     /**
      * @brief Display the available tables.
      * 
@@ -44,8 +49,11 @@ public:
      * 
      */
     void displayReservations() const;
+    void displayWalkIns() const;
 
 private:
     std::vector<Table> tables; ///< The vector of tables managed by the MaitreD.
     std::vector<Reservation> reservations; ///< The vector of reservations managed by the MaitreD.
+    BookingStrategy* strategy;
+    std::vector<WalkIn> walkIns;
 };

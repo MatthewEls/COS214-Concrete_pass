@@ -1,5 +1,4 @@
 // TableState.h
-#pragma once
 
 class TableState {
 public:
