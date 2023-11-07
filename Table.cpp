@@ -7,14 +7,12 @@
 #include "NotReadyState.h"
 
 using namespace std;
-Table::Table(const std::string& tableName) : name(tableName), state(new AvailableTableState()),cState(new NotReadyState) {
-     cout<<"\t\t\t\tTable "<<tableName<<" available for shift" << endl;
-}
+Table::Table(const std::string& tableName) : name(tableName), state(new AvailableTableState()),cState(new NotReadyState) {}
 
 void Table::seatTable(int partySize) {
     if (partySize <= maxCapacity) {
         state->seatTable(*this);
-        cout<<"\t\t\t\tTable "<<name<<" is now occupied by a party of "<<partySize<<"."<<endl;
+        cout<<"Table "<<name<<" is now occupied by a party of "<<partySize<<"."<<endl;
     } else {
         std::cout << "Party size exceeds the maximum capacity of this table." << std::endl;
     }
@@ -27,7 +25,7 @@ void Table::seatTableComp(int partySize) {
 
 void Table::freeTable() {
     state->freeTable(*this);
-    cout<<"\t\t\t\tTable: "<<this->getName()<<" is now free"<<endl;
+    cout<<"Table: "<<this->getName()<<" is now free"<<endl;
 
 }
 

@@ -26,13 +26,6 @@ public:
      */
     std::string getItemType() const override;
 
-
-    /**
-     * Function to display a topping to the pizza.
-     * @param topping The name of the topping to add.
-     */
-    void displayToppings();
-    
     /**
      * Get the price of the pizza.
      * @return The total price of the pizza including toppings.
