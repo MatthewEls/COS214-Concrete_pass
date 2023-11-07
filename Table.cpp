@@ -8,7 +8,7 @@
 
 using namespace std;
 Table::Table(const std::string& tableName) : name(tableName), state(new AvailableTableState()),cState(new NotReadyState) {
-     cout<<"\t\t\t\tTable "<<tableName<<" available for shift" << endl;
+     cout<<"Table "<<tableName<<" available for shift" << endl;
 }
 
 void Table::seatTable(int partySize) {
