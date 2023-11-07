@@ -49,7 +49,8 @@ void displayMainMenu()
     std::cout << "5. View Waiters Assigned to Tables" << std::endl;
     std::cout << "6. Leave Table" << std::endl;
     std::cout << "7. Order Pizza" << std::endl; // Added option to order pizza
-    std::cout << "8. Exit" << std::endl;
+    std::cout << "8. View Customers" << std::endl;
+    std::cout << "9. Exit" << std::endl;
     std::cout << "=============================================" << std::endl;
     std::cout << "Please enter your choice: ";
 }
@@ -246,17 +247,17 @@ void orderPizza(Menu &menu, Toppings &toppings, Customer &customer, Kitchen &kit
             if (selectedPizza)
             {
                 // Ask if the customer wants additional toppings
-                cout << "Would you like to add additional toppings or drinks? (yes/no): ";
-                string additionalToppingsChoice;
+                cout << "Would you like to add additional toppings or drinks? (Y/N): ";
+                char additionalToppingsChoice;
                 cin >> additionalToppingsChoice;
 
-                if (additionalToppingsChoice == "yes")
+                if ( additionalToppingsChoice == 'Y' ||  additionalToppingsChoice == 'y')
                 {
                     // Display available toppings
                     toppings.displayToppingPrices();
 
                     // Ask the user to select toppings
-                    cout << "Enter the topping(s) you want (comma-separated, e.g., Olives,Basil): ";
+                    cout << "Enter the add-on(s) you want (comma-separated, e.g., Olives,Fanta): ";
                     cin.ignore(); // Consume the newline character
                     string selectedToppings;
                     getline(cin, selectedToppings);
@@ -724,13 +725,7 @@ int main()
             }
             break;
         }
-        case 8:
-        {
-            // Exit the program
-            cout << "Thank you for using the Restaurant Reservation System. Goodbye!" << endl;
-            return 0;
-        }
-        case 9:
+         case 8:
         {
             Customer *selectedCustomer = nullptr;
             cout << "Customers";
@@ -741,6 +736,14 @@ int main()
             break;
         }
 
+        case 9:
+        {
+            // Exit the program
+            cout << "Thank you for using the Restaurant Reservation System. Goodbye!" << endl;
+            return 0;
+
+        }
+       
         default:
         {
             cout << "Invalid choice. Please try again." << endl;
